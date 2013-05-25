@@ -6,13 +6,15 @@
 % Vorspann
 % ----------------------------------------------------------------------
 
-\documentclass[paper=A5,pagesize,fontsize=11pt,draft=false,BCOR=6mm,DIV=13,bibliography=totoc]{scrreprt} % Dokumententyp
+\documentclass[paper=A4,pagesize,fontsize=11pt,draft=false,BCOR=6mm,DIV=13,bibliography=totoc]{scrreprt} % Dokumententyp
 \usepackage[english,german]{babel}
 \usepackage[babel,autostyle=true]{csquotes}
 \usepackage[style=numeric-comp,sorting=none]{biblatex}
 %\usepackage[cam,a4,center]{crop}
 %\usepackage{german}                   % deutsches Paket
 \usepackage[utf8]{inputenc}         % Codepage utf8
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
 \usepackage[T1]{fontenc}
 \usepackage{longtable}                % Paket für lange Tabellen
 \usepackage{adjustbox}
@@ -54,7 +56,7 @@
 % Dokumenteninfos
 % ----------------------------------------------------------------------
 %\author{Frank Meier\footnote{\texttt{frmeier@ethz.ch}, ETH Zürich und Paul Scherrer Institut, Villigen}}
-\title{Testboard Manual}
+\title{PIXEL DTB\\Testboard for Readout Chips\\Manual}
 \subtitle{Version 0.0}
 \date{}
 
@@ -95,10 +97,9 @@
 \usepackage{enumerate}
 \usepackage{pdflscape}
 
-%\usepackage{helvetica}
 
 %\usepackage[xindy,toc]{glossaries}
-\makeglossaries
+%\makeglossaries
 
 \usepackage{listings}
 \lstset{numbers=left, numberstyle=\tiny, numbersep=5pt}
@@ -118,8 +119,6 @@
 
 % Dokument
 % ----------------------------------------------------------------------
-\input symbols
-\input glossary
 
 \hypersetup{%
 pdfauthor={Frank Meier Aeschbacher},%
@@ -161,11 +160,9 @@ pdfkeywords={PhD thesis, CMS, physics, LambdaB baryon, lifetime measurement}}
 
 % ========================================== Include-Dateien
 % tex-Erweiterung nicht aufführen
+\input doclog
 
 % ----------------------------------------------------------------------
-
-% -------- Widmung, Dank
-%\input widmung 
 
 % -------- Zusammenfassungen, erst in CH-Amtssprache, dann in Englisch
 %=================================================================================================
