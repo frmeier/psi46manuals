@@ -1,0 +1,5 @@
+To create this document just do
+
+    pdflatex manualNewTestboard.tex
+
+and enjoy.
