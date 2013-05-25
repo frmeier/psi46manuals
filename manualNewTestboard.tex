@@ -1,0 +1,183 @@
+% ======================================================================
+% LaTeX-Schema
+% ======================================================================
+
+
+% Vorspann
+% ----------------------------------------------------------------------
+
+\documentclass[paper=A5,pagesize,fontsize=11pt,draft=false,BCOR=6mm,DIV=13,bibliography=totoc]{scrreprt} % Dokumententyp
+\usepackage[english,german]{babel}
+\usepackage[babel,autostyle=true]{csquotes}
+\usepackage[style=numeric-comp,sorting=none]{biblatex}
+%\usepackage[cam,a4,center]{crop}
+%\usepackage{german}                   % deutsches Paket
+\usepackage[utf8]{inputenc}         % Codepage utf8
+\usepackage[T1]{fontenc}
+\usepackage{longtable}                % Paket für lange Tabellen
+\usepackage{adjustbox}
+\usepackage{booktabs}
+%\usepackage{varioref}         % Paket für erweiterte Referenzen
+\usepackage{graphicx}         % Graphikpaket
+%\usepackage{here} - veraltet, ersetzen mit float-package
+%\usepackage{float}
+%\usepackage{picins}
+\usepackage{color}
+%\usepackage{xfrac}
+\usepackage{rotating}
+%\usepackage{cancel}
+%\usepackage{concrete}
+\usepackage{appendix}
+\KOMAoptions{DIV=last}
+%\usepackage{framed}
+%\usepackage{cite}
+%\bibliography{.bib}
+%\usepackage[urw-garamond]{mathdesign}
+\usepackage[modulo]{lineno}
+
+\definecolor{hgrau}{gray}{0.9}
+\definecolor{shadecolor}{gray}{0.9}
+\definecolor{blau}{RGB}{25,31,255}
+\definecolor{grau}{gray}{.75}
+\definecolor{weiss}{gray}{1.00}
+\definecolor{gruen}{RGB}{19,159,51}
+\definecolor{rot}{RGB}{255,31,40}
+\definecolor{orange}{RGB}{255,123,21}
+
+%\newcommand\midrule{\noalign{\vskip 0.10truecm\hrule\vskip 0.10truecm}}
+\newcommand{\todo}[1]{\textcolor{orange}{\textbf{TODO: } #1}}
+
+\setkomafont{captionlabel}{%
+    \usekomafont{descriptionlabel}%
+}
+
+% Dokumenteninfos
+% ----------------------------------------------------------------------
+%\author{Frank Meier\footnote{\texttt{frmeier@ethz.ch}, ETH Zürich und Paul Scherrer Institut, Villigen}}
+\title{Testboard Manual}
+\subtitle{Version 0.0}
+\date{}
+
+% Einstellungen
+% ----------------------------------------------------------------------
+\setcounter{secnumdepth}{3}
+%\renewcommand{\baselinestretch}{1.2}
+
+
+% Seitengrösse
+%\setlength{\hoffset}{0cm}
+%\setlength{\voffset}{-3cm}
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\evensidemargin}{-2cm}
+%\setlength{\marginparwidth}{0cm}
+%\setlength{\marginparsep}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{26cm}
+%\setlength{\footskip}{1cm}
+
+%\usepackage[margin=30pt,font=small,labelfont=bf]{caption}
+%\usepackage[margin={30pt,-30pt},font=small,labelfont=bf]{caption}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Diverse Pakete
+% ----------------------------------------------------------------------
+%\usepackage{makeidx}
+\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{theorem}
+%\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{amsxtra}
+%\usepackage{mathbbol} % darf verst nach amsmath geladen werden
+\usepackage{units}
+\usepackage{enumerate}
+\usepackage{pdflscape}
+
+%\usepackage{helvetica}
+
+%\usepackage[xindy,toc]{glossaries}
+\makeglossaries
+
+\usepackage{listings}
+\lstset{numbers=left, numberstyle=\tiny, numbersep=5pt}
+\lstset{language=[GNU]C++}
+\lstset{tabsize=4, basicstyle=\footnotesize, columns=flexible}
+\lstset{escapeinside={(*@}{@*)}}
+
+
+%\usepackage{refcheck}
+
+% forciert Bilder in Tabellen oben aligniert
+\def\imagetop#1{\vtop{\null\hbox{#1}}}
+
+% Theoremumgebungen
+%\newtheorem{Def}{Definition}
+%{\theorembodyfont{\rmfamily} \newtheorem{Bsp}{Example}}
+
+% Dokument
+% ----------------------------------------------------------------------
+\input symbols
+\input glossary
+
+\hypersetup{%
+pdfauthor={Frank Meier Aeschbacher},%
+pdftitle={PhD thesis: LambdaB lifetime},%
+pdfsubject={CMS},%
+pdfkeywords={PhD thesis, CMS, physics, LambdaB baryon, lifetime measurement}}
+
+\begin{document}
+%\linenumbers
+\selectlanguage{english}
+
+% Titelseite
+
+%\begin{abstract}
+%Diese Arbeit ist eine Arbeit in Arbeit. Darum gibt es noch keine Zusammenfassung.
+%\end{abstract}
+
+\normalsize
+
+\maketitle
+
+% Vorspann
+
+% Grafikpfad
+\graphicspath{{./img/}}
+
+% ----------------------------------------------------------------------
+% Eigentliches Dokument
+
+% Klein gesetzte Brüche
+\newcommand{\smfrac}[3][]{\scriptstyle {\scriptscriptstyle #1}\frac{#2}{#3}}
+
+% Tabellen linksbündig setzen
+\setlength\LTleft\parindent
+\setlength\LTright\fill
+
+% Grad-Zeichen für Winkel und Temperaturen
+\newcommand{\degree}[0]{$^\circ$}
+
+% ========================================== Include-Dateien
+% tex-Erweiterung nicht aufführen
+
+% ----------------------------------------------------------------------
+
+% -------- Widmung, Dank
+%\input widmung 
+
+% -------- Zusammenfassungen, erst in CH-Amtssprache, dann in Englisch
+%=================================================================================================
+
+% -------- Anhänge
+%=================================================================================================
+\part{Appendices}\label{part.app} %-------------------------------------
+
+\begin{appendices}
+\end{appendices}
+
+
+% ======================================================================
+\end{document}
+
