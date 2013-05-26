@@ -98,8 +98,8 @@
 \usepackage{pdflscape}
 
 
-%\usepackage[xindy,toc]{glossaries}
-%\makeglossaries
+\usepackage[xindy,toc]{glossaries}
+\makeglossaries
 
 \usepackage{listings}
 \lstset{numbers=left, numberstyle=\tiny, numbersep=5pt}
@@ -125,6 +125,8 @@ pdfauthor={Frank Meier Aeschbacher},%
 pdftitle={PhD thesis: LambdaB lifetime},%
 pdfsubject={CMS},%
 pdfkeywords={PhD thesis, CMS, physics, LambdaB baryon, lifetime measurement}}
+
+\input glossary
 
 \begin{document}
 %\linenumbers
@@ -160,6 +162,8 @@ pdfkeywords={PhD thesis, CMS, physics, LambdaB baryon, lifetime measurement}}
 
 % ========================================== Include-Dateien
 % tex-Erweiterung nicht aufführen
+\tableofcontents
+\newpage
 \input doclog
 \input description
 

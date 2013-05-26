@@ -1,5 +1,10 @@
 To create this document just do
 
+    make
+
+and enjoy. If you want to do just one pdfLaTeX iteration then 
+
     pdflatex manualNewTestboard.tex
 
-and enjoy.
+does the job.
+
