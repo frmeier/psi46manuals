@@ -14,6 +14,26 @@ The pixel testboard unit \enquote{Pixel DTB} is a data acquisition board specifi
     \end{center}
 \end{figure}
 
+\section{ROC/Module Test Adaptor}
+
+This connector is used to connect a single \gls{ROC} or a module. It has 68~pins and uses standard SCSI connectors. The connection has been succesfully tested to support ribbon cables of up to 1~m length.
+
+\todo{Beat: Genauer Steckertyp und Kabel, evtl. einen Referenzlieferanten angeben?}
+
+The wiring scheme is given in table~\ref{tab:ROCmoduleInterfaceCable} for the cable and the plug. Fig.~\ref{fig:ROCmoduleInterfaceConnector} shows a schematic of the plug. The sensitive high-frequency signals are carried out symmetrically. Grounded lines have been used to separate different signals. The following signal levels are used:
+
+\begin{description}
+    \item[power:]
+    \item[LCDS:]
+    \item[out:]
+    \item[LCDS/LVDS:]
+    \item[bidir:]
+    \item[analog:]
+\end{description}
+\todo{LCDS und LVDS Pegel: Erklären wie das bei uns genau definiert ist (das weicht vom Standard ab, oder?)}
+
+Observe that line~68 (outermost wire) carries the high-voltage. Protect cables in case your application makes use of the high-voltage supply.
+
 \begin{table}[p]
     \caption{Connector}
     {\tiny
@@ -92,7 +112,15 @@ The pixel testboard unit \enquote{Pixel DTB} is a data acquisition board specifi
 	    \bottomrule
 	\end{longtable}
     }
-    \label{ROCmoduleInterfaceConnector}
+    \label{tab:ROCmoduleInterfaceCable}
 \end{table}
+
+\begin{figure}[hbtp]
+    \begin{center}
+	\includegraphics[width=85mm]{img/DTB_adapterplug.pdf}
+	\caption{ROC/Module interface connector pin scheme.}
+	\label{fig:ROCmoduleInterfaceConnector}
+    \end{center}
+\end{figure}
 
 
