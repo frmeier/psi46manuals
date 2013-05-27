@@ -6,7 +6,7 @@ In this chapter, you will learn the basic operation of a test board setup, commu
 To work yourself through this tutorial, you need
 \begin{itemize}
     \item A DTB, connected to your computer via USB
-    \item A adapter board for a single chip
+    \item An adapter board for a single chip
     \item A single chip holder, equiped with a chip (does not require a sensor)
     \item The software \texttt{psi46test} installed
     \item An oscilloscope, fast enough to resolve 200\,MHz signals
@@ -14,22 +14,26 @@ To work yourself through this tutorial, you need
 \end{itemize}
 \todo{Find conistent names for the adapter card and the single chip card and use it consistently.}
 
-If you need help to set this up, please go to the \enquote{How To's}, chapter \ref{sec:howto}.
+\todo{Check this list and adjust requirements if needed}
+
+If you need help to set this up, please go to the \enquote{How To's} in chapter \ref{sec:howto}.
 
 \note{Whenever you do any change to the testboard (i.e.~switch adapter cards, switch chips etc.), make sure that the chip is not powered. To do so, check that the red LED labeled \enquote{RUN} is dark. If not, issue the command \psicommand{poff} from within \texttt{psi46test}.}
 
 %---------------------------------------------------------------------
 \section{Hello world}
-For this test, connect an adapter card to the DTB but do not insert a chip holder.
+
 
 %A first test is to see if supply voltages are present. Invoke \texttt{psi46test} and issue the command
 
-A basic test is to see if we can trigger on a signal and see something. For this we program the built-in pulse generator to send a sync signal and a token. The sync signal is not routed to the chip. It is only used as a marker of the pulse sequence so that the oscilloscope has a meaningful signal to trigger on. Make the following connections:
+A basic test is to see if we can trigger on a signal and see something. For this test, connect an adapter card to the DTB but do not insert a chip holder. We program the built-in pulse generator to send a sync signal and a token. The sync signal is not routed to the chip. It is only used as a marker of the pulse sequence so that the oscilloscope has a meaningful signal to trigger the scope on. The token is a signal that would be passed to the ROC, if one is connected.
+
+Make the following connections:
 \begin{itemize}
     \item Connect the \enquote{D1} output of the DTB to the first channel of your scope
     \item Connect the \enquote{A1+} output of the DTB to the second channel of your scope
 \end{itemize}
-Let us set a basic sequence:
+Then issue the following sequence from \texttt{psi46test}:
 
 \bigskip
 
@@ -46,18 +50,21 @@ Command & Brief description \\
 
 \bigskip
 
-One clock cycle is 25\,ns long, i.e.~the frequency is 40\,MHz, which coincides with the LHC bunch frequency.
+Here, one clock cycle is 25\,ns long, i.e.~the frequency is 40\,MHz, which is the same as the LHC collision frequency.
 
-Set up your scope to trigger on the first channel and you should see something like what is shown in Fig.~\ref{fig:tut_scope1}.
+Set up your scope to continuously trigger on the first channel (D1) and you should see something like what is shown in Fig.~\ref{fig:tut_scope1}. In case you cannot reproduce this, check your setup for mistakes and inspect the settings on your scope.
 \begin{figure}[h]
     \begin{center}
 	\includegraphics[width=0.7\textwidth]{img/tut_scope1.png}
-	\caption{Output of first test. The first channel (yellow, top) shows the sync signal. It has a width of 25\,ns. The second signal is the token (magenta). It appears with some delay and has the same width.}
+	\caption{Output of the \enquote{hello world} test. The first channel (yellow, top) shows the sync signal. It has a width of 25\,ns. The second signal is the token (magenta). It appears with some delay and has the same width.}
 	\label{fig:tut_scope1}
     \end{center}
 \end{figure}
 
-Now let us see what this little sequence actually does. You can think of such a sequence as a little program. Using the command \psicommand{pgset} one can create pulse sequences to test different things. Our sequence has only one step where we create a pulse on the sync and the token signal. One step has a number, a bit pattern and a delay to the next pattern. If the delay is set to 0, the cycle ends, as it does in our example. The bit pattern is given as a binary number, starting with a \psicommand{p}. The following bits can be set:
+Now let us see what this sequence actually does.  The first two steps select the signals of the digital and analog outputs that are routed to the scope. The \psicommand{pgset} is used to define a pattern that will be generated every 1000 clock cycles again. Zoom out in the time domain and at a point you should see the signal from the following cycle. Reduce the number of cycles in \psicommand{pgloop} if necessary.
+
+The pattern we use here consists of just one set of bits set at the begin of the cycle. This command is more powerful, as we will see later on. Here, we only ask the pulse generator to send a sync and a token out signal at the begin of the cycle and nothing else follows. The meaning of the terminating 0 in \psicommand{pgset 0 b100001 0} is that no other signal will follow.
+%You can think of such a sequence as a small program. Using the command \psicommand{pgset} one can create pulse sequences to test different things. Our sequence has only one step where we create a pulse on the sync and the token signal. One step has a number, a bit pattern and a delay to the next pattern. If the delay is set to 0, the cycle ends, as it does in our example. The bit pattern is given as a binary number, starting with a \psicommand{p}. The following bits can be set:
 \begin{center}
 \begin{tabular}{lcccccc}
     \toprule
@@ -68,7 +75,8 @@ Abbreviated name: & (sync) & (rest) & (resr) & (cal) & (trg) & (tok) \\
 \end{tabular}
 \end{center}
 
-Our example sends out a sync and a token signal, as we observed. So we understood what the sequence does. And we know that our setup works.
+We see what we expect: a sync and a token signal, as we observed. So we understand what the sequence does. And we know that our setup works.
+\todo{Explain the delay between the two signals.}
 
 % px4.png
 
@@ -107,7 +115,9 @@ To make things visible you need to use the scope in single trigger mode. You can
     \end{center}
 \end{figure}
 
-The result shows the signal we trigger on. The \psicommand{send} signal is internal to the testboard and only available to our convenience \todo{Beat: stimmt das?} for triggering. The clock is here to give an idea over what timeframe the action happens. The activity spans over several clock cycles. It begins with the header addressing the ROC. In our example this is \psicommand{0}, a default value. Then it follows a bunch of other signals we do not need to understand now. It is just here to show that we can talk to the ROC. You can change the address by issuing \psicommand{select N} where N is a number between 0 and 15 and see what changes. If you do e.g.~\psicommand{select b111} (recall: a number starting with a b is interpreted as a binary number, which comes in handy here) then you see that first the signal is low for a logical 0 and then three logical 1 follow. The length of one bit is a full clock cycle, i.e.~clock up and down. Play around with different number to make sure you understand this pattern.
+The result shows the signal we trigger on. The \psicommand{send} signal is internal to the testboard and only available to our convenience \todo{Beat: stimmt das? Wie ist das Signal genau definiert?} for triggering. The clock is here to give an idea over what timeframe the action happens. The activity spans over several clock cycles. It begins with the header addressing the ROC, followed by a bunch of other signals in a pattern we do not need to understand right now. In our example we did not set a specific ROC address, the value to talk to a specific ROC. If we would work with a module, 16 ROC's would be present. With this address we would choose to which of these we want to talk. The default value is \psicommand{0}. But how is this encoded? To address one ROC out of 16 we need four bits. Encoding 0 would end in \psicommand{b0000}. So we should see four zeroes, which is what we see. The length of one bit is a full clock cycle, i.e.~clock up and down. Try to count the clock cycles and make sure you understand how this works.
+
+You can change the ROC address to talk to by issuing \psicommand{select N}, where N is a number between 0 and 15 and see what changes. If you do e.g.~\psicommand{select b0111} (recall: a number starting with a b is interpreted as a binary number, which comes in handy here) then you see that the signal is low for a logical 0 and then three logical 1 follow. Play around with different numbers to make sure you understand this pattern.
 
 \section{Listening to the ROC}
 The result of the previous step showe the testboard talking to the ROC only. The real thing is to talk to the ROC and read back some information. But for this we need to work on some timing issues first.
