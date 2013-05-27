@@ -1,6 +1,7 @@
 \chapter{Tutorial}
 In this chapter, you will learn the basic operation of a test board setup, communication with the test board and a single chip.
 
+%---------------------------------------------------------------------
 \section{Requirements}
 To work yourself through this tutorial, you need
 \begin{itemize}
@@ -17,6 +18,7 @@ If you need help to set this up, please go to the \enquote{How To's}, chapter \r
 
 \note{Whenever you do any change to the testboard (i.e.~switch adapter cards, switch chips etc.), make sure that the chip is not powered. To do so, check that the red LED labeled \enquote{RUN} is dark. If not, issue the command \psicommand{poff} from within \texttt{psi46test}.}
 
+%---------------------------------------------------------------------
 \section{Hello world}
 For this test, connect an adapter card to the DTB but do not insert a chip holder.
 
@@ -50,7 +52,7 @@ Set up your scope to trigger on the first channel and you should see something l
 \begin{figure}[h]
     \begin{center}
 	\includegraphics[width=0.7\textwidth]{img/tut_scope1.png}
-	\caption{Output of first test. The first channel (yellow, top) shows the sync signal. It has a width of 25\,ns. The second signal is the token (red). It appears with some delay and has the same width.}
+	\caption{Output of first test. The first channel (yellow, top) shows the sync signal. It has a width of 25\,ns. The second signal is the token (magenta). It appears with some delay and has the same width.}
 	\label{fig:tut_scope1}
     \end{center}
 \end{figure}
@@ -70,6 +72,43 @@ Our example sends out a sync and a token signal, as we observed. So we understoo
 
 % px4.png
 
-\psicommand{getid}
 
+%---------------------------------------------------------------------
+\section{Basic communication with a ROC}
+
+Now we insert a ROC into the adapter board. Don't forget to check that nothing is running and all LED's are dark before inserting the chip. Make sure that you insert the chip card the right way, i.e.~the wirebonds should face towards the DTB.
+
+Add another cable to connect \psicommand{A2+} to the third channel of your scope.
+
+We want to see the ROC talking. For this we simply send a command to set some register on the chip and see what happens. It doesn't matter which register we use, setting \psicommand{vcal} does the job. So the sequence of commands in \texttt{psi46test} is:
+
+\bigskip
+
+\begin{tabular}{lp{0.6\textwidth}}
+    \toprule
+Command & Brief description \\
+    \midrule
+\psicommand{d1 3} & Select the \psicommand{send} signal as the one we trigger on the scope \\
+\psicommand{a1 4} & Select the clock signal for channel 2 \\
+\psicommand{a2 5} & Select the send data signal for channel 3 \\
+\psicommand{vcal 0} & Program a register on the ROC \\
+    \bottomrule
+\end{tabular}
+
+\bigskip
+
+To make things visible you need to use the scope in single trigger mode. You can issue the \psicommand{vcal 0} command as often as you want. You should see something like in Fig.~\ref{fig:tut_scope2}.
+
+\begin{figure}[h]
+    \begin{center}
+	\includegraphics[width=0.7\textwidth]{img/tut_scope2.png}
+	\caption{Simple communication to the ROC. The first signal (yellow) shows the signal we trigger on, the \psicommand{send} signal. The second signal (magenta) is the clock and the third (cyan) the signal sent to the ROC.}
+	\label{fig:tut_scope2}
+    \end{center}
+\end{figure}
+
+The result shows the signal we trigger on. The \psicommand{send} signal is internal to the testboard and only available to our convenience \todo{Beat: stimmt das?} for triggering. The clock is here to give an idea over what timeframe the action happens. The activity spans over several clock cycles. It begins with the header addressing the ROC. In our example this is \psicommand{0}, a default value. Then it follows a bunch of other signals we do not need to understand now. It is just here to show that we can talk to the ROC. You can change the address by issuing \psicommand{select N} where N is a number between 0 and 15 and see what changes. If you do e.g.~\psicommand{select b111} (recall: a number starting with a b is interpreted as a binary number, which comes in handy here) then you see that first the signal is low for a logical 0 and then three logical 1 follow. The length of one bit is a full clock cycle, i.e.~clock up and down. Play around with different number to make sure you understand this pattern.
+
+\section{Listening to the ROC}
+The result of the previous step showe the testboard talking to the ROC only. The real thing is to talk to the ROC and read back some information. But for this we need to work on some timing issues first.
 
