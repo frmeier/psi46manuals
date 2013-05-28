@@ -221,7 +221,55 @@ So what does this transmited data mean? The first group of four is the ROC addre
 
 Intentionally we sent the simplest command we can, \psicommand{cald}. So we expect just the four command bits 0001 and nothing else, as \psicommand{cald} takes no parameter.
 
-Now let's see if this actually works, i.e.~if the ROC receives a command and acts upon. The command \psicommand{getia} displays the current analog current. Try it out. It should be close to zero. Now set the analog voltage in the chip, $V_\text{ana}$, to some value, say \psicommand{vana 100} and check the current again. It should be higher. The ROC actually received a command and we can see that something happens.
+Now let's see if this actually works, i.e.~if the ROC receives a command and acts upon. First, we need to make sure that the ROC has the right address. Set its address to the same value as you used in te last \psicommand{select} command, i.e.~do \psicommand{rocaddr b1011}. This command works only in the case of a single ROC, as we do it now. It gives the ROC the specific address. To talk to it, the value after \psicommand{select} needs to match.
+
+Now, the command \psicommand{getia} displays the current analog current. Try it out. It should be close to zero. Now set the analog voltage in the chip, $V_\text{ana}$, to some value, say \psicommand{vana 100} and check the current again. It should be higher. The ROC actually received a command and we can see that something happens.
+
+\section{Reading from the ROC}
+
+\bigskip
+
+\begin{tabular}{lp{0.6\textwidth}}
+    \toprule
+Command & Brief description \\
+    \midrule
+\psicommand{pon}   & Turn on the testboard power \\
+\psicommand{clk 10} & Resets some timing parameter \\
+\psicommand{sda 25} & Resets some timing parameter \\
+\psicommand{ctr 10} & Resets some timing parameter \\
+\psicommand{tin 15} & Resets some timing parameter \\
+\psicommand{pgset 0 b101000 10} & \\
+\psicommand{pgset 1 b000100 40} & \\
+\psicommand{pgset 2 b000010 16} & \\
+\psicommand{pgset 3 b000001 0} & \\
+\psicommand{rocaddr b1011} & Sets the address of the chip \\
+\psicommand{select b1011} & Sets the address of the chip we want to talk to \\
+\psicommand{d1 9}  & \\
+\psicommand{a1 0}  & \\
+\psicommand{a2 1}  & \\
+\psicommand{pgloop 1000}  & \\
+    \bottomrule
+\end{tabular}
+
+\bigskip
+
+\todo{Mention that we have a differential signal. Might be good to hook up A2- and calculate the difference}
 
 
+\bigskip
+
+\begin{tabular}{lp{0.6\textwidth}}
+    \toprule
+Command & Brief description \\
+    \midrule
+\psicommand{vcal 60}   & \\
+\psicommand{vthr 60}   & \\
+\psicommand{wbc 40}   & (needs a scan) \\
+\psicommand{cole :}   & \\
+\psicommand{pixe 10 10 0}   & \\
+\psicommand{cal 10 10}   & \\
+    \bottomrule
+\end{tabular}
+
+\bigskip
 
