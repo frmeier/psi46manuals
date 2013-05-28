@@ -192,6 +192,36 @@ All the interesting stuff goes on when clock is on high level. Before we try to 
     \end{center}
 \end{figure}
 
-Signalverlauf besprechen, Vana als Erfolgstest.
+\begin{figure}[h]
+    \begin{center}
+	\includegraphics[width=0.7\textwidth]{img/tut_scope3_crop.pdf}
+	\caption{Detail of Fig.~\ref{fig:tut_scope3}. The idling time is interrupted by a start signal, followed by the data 10110001. Then the stop signal appears and the idle signal appears again. The function of the additional zero (in green) is explained in the text.}
+	\label{fig:tut_scope3}
+    \end{center}
+\end{figure}
+
+Now we want to understand what is going on. Fig.~\ref{fig:tut_scope3} shows the relevant section. Let's see if we can identify all stages of the transmission. It first starts with a long idle section. Then the communication starts. While clock is high the signal edge transitions to low. All the following data is either 0 or 1 and is constant while clock is high. Then the signal edge rises while clock is high, the data transmission has ended and returns to idle. The data is arranged in groups of 5 bits. The first four are the data bits and the fifth is bit number~4 inverted. So if the data is e.g.~1001, then the fifth bit would be 0. The full group would be 10010. And if the data is 1000 then the full group would be 10001. The reason for this is to make sure that the signal is more balanced in 0 and 1. In CMS the data would be transferred to a optical transmission line. The receiver at the end of it has an auto-gain feature which would turn up the amplification if nothing happens for some time. Would a data transfer consist of a lot of zeroes, the signal would look constant for a while. This trick with adding a fifth inverted bit does the trick. 00000000 would end up as 0000100001.
+
+So what does this transmited data mean? The first group of four is the ROC address. In this case we used \psicommand{b1011} as address, so this is what we find. Adjsut your \psicommand{select} command to select b1011 if you want to see exactly the same output. The second group of four bits is the command. The possibilities are:
+
+\bigskip
+
+\begin{tabular}{clll}
+    \toprule
+    Code & Meaning & Following parameters & Total length \\
+    \midrule
+    1000 & dac programming (setdac)    & $2\times8$\,bits & 20\,bits \\
+    0100 & pixel programming           & $3\times8$\,bits & 28\,bits \\
+    0010 & calibration set             & $3\times8$\,bits & 28\,bits \\
+    0001 & calibration delete (cald) & no parameters & 4\,bits \\
+    \bottomrule
+\end{tabular}
+
+\bigskip
+
+Intentionally we sent the simplest command we can, \psicommand{cald}. So we expect just the four command bits 0001 and nothing else, as \psicommand{cald} takes no parameter.
+
+Now let's see if this actually works, i.e.~if the ROC receives a command and acts upon. The command \psicommand{getia} displays the current analog current. Try it out. It should be close to zero. Now set the analog voltage in the chip, $V_\text{ana}$, to some value, say \psicommand{vana 100} and check the current again. It should be higher. The ROC actually received a command and we can see that something happens.
+
 
 
