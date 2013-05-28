@@ -92,7 +92,7 @@ Now we insert a ROC into the adapter board. Don't forget to check that nothing i
 
 Add another cable to connect \psicommand{A2+} to the third channel of your scope.
 
-We want to see the ROC talking. For this we simply send a command to set some register on the chip and see what happens. It doesn't matter which register we use, setting \psicommand{vcal} does the job. So the sequence of commands in \texttt{psi46test} is:
+We want to see the ROC talking. For this we simply send a command to the chip and see what happens. For the moment it doesn't matter what we send out, sending \psicommand{cald} does the job. So the sequence of commands in \texttt{psi46test} is:
 
 \bigskip
 
@@ -100,11 +100,16 @@ We want to see the ROC talking. For this we simply send a command to set some re
     \toprule
 Command & Brief description \\
     \midrule
-\psicommand{pon}               & Turn on the testboard power \\
-\psicommand{d1 3} & Select the \psicommand{send} signal as the one we trigger on the scope \\
-\psicommand{a1 4} & Select the clock signal for channel 2 \\
-\psicommand{a2 5} & Select the send data signal for channel 3 \\
-\psicommand{vcal 0} & Program a register on the ROC \\
+\psicommand{pon}   & Turn on the testboard power \\
+\psicommand{clk 0} & Resets some timing parameter \\
+\psicommand{ctr 0} & Resets some timing parameter \\
+\psicommand{sda 0} & Resets some timing parameter \\
+\psicommand{tin 0} & Resets some timing parameter \\
+\psicommand{select 0} & Sets the address of the chip we want to talk to \\
+\psicommand{d1 3}  & Select the \psicommand{send} signal as the one we trigger on the scope \\
+\psicommand{a1 4}  & Select the clock signal for channel 2 \\
+\psicommand{a2 5}  & Select the send data signal for channel 3 \\
+\psicommand{cald}  & Program a register on the ROC \\
     \midrule
 \psicommand{poff}              & Turn off the testboard power. Do this after you are finished with your measurements. \\
     \bottomrule
@@ -112,7 +117,8 @@ Command & Brief description \\
 
 \bigskip
 
-To make things visible you need to use the scope in single trigger mode. You can issue the \psicommand{vcal 0} command as often as you want. You should see something like in Fig.~\ref{fig:tut_scope2}.
+The four timing parameters we just adjust to some default value of 0. We will adjust them in the next part of this tutorial.
+To make things visible you need to use the scope in single trigger mode. You can issue the \psicommand{cald} command as often as you want. You should see something like in Fig.~\ref{fig:tut_scope2}.
 
 \begin{figure}[h]
     \begin{center}
@@ -122,10 +128,68 @@ To make things visible you need to use the scope in single trigger mode. You can
     \end{center}
 \end{figure}
 
-The result shows the signal we trigger on. The \psicommand{send} signal is internal to the testboard and only available to our convenience \todo{Beat: stimmt das? Wie ist das Signal genau definiert?} for triggering. The clock is here to give an idea over what timeframe the action happens. The activity spans over several clock cycles. It begins with the header addressing the ROC, followed by a bunch of other signals in a pattern we do not need to understand right now. In our example we did not set a specific ROC address, the value to talk to a specific ROC. If we would work with a module, 16 ROC's would be present. With this address we would choose to which of these we want to talk. The default value is \psicommand{0}. But how is this encoded? To address one ROC out of 16 we need four bits. Encoding 0 would end in \psicommand{b0000}. So we should see four zeroes, which is what we see. The length of one bit is a full clock cycle, i.e.~clock up and down. Try to count the clock cycles and make sure you understand how this works.
+The result shows the signal we trigger on. The \psicommand{send} signal is internal to the testboard and only available to our convenience for triggering. The clock is here to give an idea over what timeframe the action happens. The activity spans over several clock cycles. It begins with the header addressing the ROC, followed by a bunch of other signals in a pattern we do not need to understand right now. In our example we did not set a specific ROC address, the value to talk to a specific ROC. If we would work with a module, 16 ROC's would be present. With this address we would choose to which of these we want to talk. The default value is \psicommand{0}. But how is this encoded? To address one ROC out of 16 we need four bits. Encoding 0 would end in \psicommand{b0000}. So we should see four zeroes, which is what we see. The length of one bit is a full clock cycle, i.e.~clock up and down. Try to count the clock cycles and make sure you understand how this works.
 
 You can change the ROC address to talk to by issuing \psicommand{select N}, where N is a number between 0 and 15 and see what changes. If you do e.g.~\psicommand{select b0111} (recall: a number starting with a b is interpreted as a binary number, which comes in handy here) then you see that the signal is low for a logical 0 and then three logical 1 follow. Play around with different numbers to make sure you understand this pattern.
 
 \section{Listening to the ROC}
 The result of the previous step shows the testboard talking to the ROC only. The real thing is to talk to the ROC and read back some information. But for this we need to work on some timing issues first.
+
+What we will do first is to adjust the timing of signal to program the ROC relative to the clock. For this we use the same setup as before and start to set values for the delay of the clock signal \psicommand{clk} and the send data signal \psicommand{sda}. All delay values can be set as positive numbers up to a maximum of about 300. All this takes place in units of $1/20$ of a clock cycle. So setting a value of 20 would shift the delay by exactly one clock cycle. Issue the following command and see what happens:
+
+\bigskip
+
+\begin{tabular}{lp{0.6\textwidth}}
+    \toprule
+\psicommand{clk 20} & Sets the delay of the clock to 20, i.e.~one full cycle \\
+    \bottomrule
+\end{tabular}
+
+\bigskip
+
+As expected, you see no significant change. The clock has been shifted by one full cycle, so the picture should be the same.
+
+Observe that we no longer write \psicommand{pon} and \psicommand{poff} at the begin and end of the sequence. Make sure you do this whenever you measure something.
+
+We can only set positive values. At some point we might want to have the ability to set delays negative to the clock. Therefore we set the value to some positive number, say 10:
+
+\bigskip
+
+\begin{tabular}{lp{0.6\textwidth}}
+    \toprule
+\psicommand{clk 10} & Sets the delay of the clock to 10, i.e.~one full cycle \\
+    \bottomrule
+\end{tabular}
+
+\bigskip
+
+The change you see on the oscilloscope is minimal. The clock is shifted by half a cycle, so more or less inverted. Now we need to know how we have to set the \psicommand{sda} signal relative to the clock. The programming of the chip uses a modified $I^2C$ signal. Modified means here that not the full set of possibilities are implemented. $I^2C$ is an industry standard to communicate with electronic devices and is widely used for example in the car industry. Our implementation differs that we can send data much faster but cannot read back on the same wire.
+
+$I^2C$ is a serial interface and uses a clock and a data wire to communicate. The following states are possible:
+
+\bigskip
+
+\begin{tabular}{lcl}
+    \toprule
+Name & Data signal while clock is high & Description \\
+    \midrule
+idle & high & No data transferred \\
+start & falling edge & Data transfer starts \\
+data & high or low & Data to be transferred \\
+stop & rising edge & Data transfer ends \\
+    \bottomrule
+\end{tabular}
+
+\bigskip
+
+All the interesting stuff goes on when clock is on high level. Before we try to analyse the signal in detail we adjust the timing. The very first change on \psicommand{sda} should be a drop from high to low while clock is high (start). So inspecting Fig.~\ref{fig:tut_scope2} shows that this is not the case. Try to shift the signal by setting the delay using the \psicommand{sda} command to the smallest possible value but not smaller than what we used for \psicommand{clk}. You should end up with something that looks like Fig.~\ref{fig:tut_scope3}
+
+\begin{figure}[h]
+    \begin{center}
+	\includegraphics[width=0.7\textwidth]{img/tut_scope3.png}
+	\caption{Same as in Fig.~\ref{fig:tut_scope2} but now the timing is correctly adjusted between clock and send data.}
+	\label{fig:tut_scope3}
+    \end{center}
+\end{figure}
+
 
