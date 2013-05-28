@@ -42,10 +42,13 @@ Then issue the following sequence from \texttt{psi46test}:
     \toprule
 Command & Brief description \\
     \midrule
+\psicommand{pon}               & Turn on the testboard power \\
 \psicommand{d1 9}              & This selects pg\_sync as signal routed to D1\\
 \psicommand{a1 0}              & Select the token in signal as analog signal routed to A1\\
 \psicommand{pgset 0 b100001 0} & Program the pulse generator to send a sync and a token out \\
 \psicommand{pgloop 1000}       & Start the pulse generator. Repeats the pulse sequence infinitely, start a new cycle every 1000 clock cycles\\
+    \midrule
+\psicommand{poff}              & Turn off the testboard power. Do this after you are finished with your measurements. \\
     \bottomrule
 \end{tabular}
 
@@ -97,10 +100,13 @@ We want to see the ROC talking. For this we simply send a command to set some re
     \toprule
 Command & Brief description \\
     \midrule
+\psicommand{pon}               & Turn on the testboard power \\
 \psicommand{d1 3} & Select the \psicommand{send} signal as the one we trigger on the scope \\
 \psicommand{a1 4} & Select the clock signal for channel 2 \\
 \psicommand{a2 5} & Select the send data signal for channel 3 \\
 \psicommand{vcal 0} & Program a register on the ROC \\
+    \midrule
+\psicommand{poff}              & Turn off the testboard power. Do this after you are finished with your measurements. \\
     \bottomrule
 \end{tabular}
 
