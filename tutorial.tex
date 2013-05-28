@@ -23,6 +23,7 @@ If you need help to set this up, please go to the \enquote{How To's} in chapter 
 %---------------------------------------------------------------------
 \section{Hello world}
 
+\todo{First try out welcome command}
 
 %A first test is to see if supply voltages are present. Invoke \texttt{psi46test} and issue the command
 
@@ -120,5 +121,5 @@ The result shows the signal we trigger on. The \psicommand{send} signal is inter
 You can change the ROC address to talk to by issuing \psicommand{select N}, where N is a number between 0 and 15 and see what changes. If you do e.g.~\psicommand{select b0111} (recall: a number starting with a b is interpreted as a binary number, which comes in handy here) then you see that the signal is low for a logical 0 and then three logical 1 follow. Play around with different numbers to make sure you understand this pattern.
 
 \section{Listening to the ROC}
-The result of the previous step showe the testboard talking to the ROC only. The real thing is to talk to the ROC and read back some information. But for this we need to work on some timing issues first.
+The result of the previous step shows the testboard talking to the ROC only. The real thing is to talk to the ROC and read back some information. But for this we need to work on some timing issues first.
 
