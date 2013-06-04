@@ -18,15 +18,41 @@ The pixel testboard unit \enquote{Pixel DTB} is a data acquisition board specifi
     \begin{center}
 	\includegraphics[width=0.7\textwidth]{img/DTB_front_full.jpg}
 
+	\medskip
+
+	\begin{tabular}{lp{10cm}}
+	    Sensor Bias & Input socket for sensor bias. This is routed with separate ground lines to the test adapter. The unit has been tested and is goot for voltages up to 700\,V. Switched with a programmable relais. \\
+	    A1/A2 & Two symmetric analog outputs, programmable. $+$ and $-$ refer to the two polarities of the signal. Low impedance outputs, i.e.~can directly be connected to an oscilloscope without disturbing the sensor. \\
+	    ROC/Module Test Adapter & 68-pin standard SCSI connector to single ROC adapter card or module. Details see section~\ref{sec:ROCadapter}. \\
+	\end{tabular}
+
+	\bigskip
+
 	\bigskip
 
 	\includegraphics[width=0.7\textwidth]{img/DTB_back_full.jpg}
-	\label{fig:DTBphoto}
-	\caption{Photograph of front and back panel.}
+
+	\medskip
+
+	\begin{tabular}{lp{10cm}}
+	    USB 2.0 & USB hookup to computer \\
+	    Ethernet & Standard Ethernet connector. Speeds of 10/100/1000\,Mbit/s are suported. \\
+	    D1/D2 & Two digital outputs, programmable. \\
+	    CLK & External clock input. \\
+	    TRG & External trigger signal input. \\
+	    1--4 & Programmable LED. \\
+	    HV & LED signalling high voltage on. \\
+	    RUN & Indicates power for ROC/module on. \\
+	    6V/3A & Connector for power supply. Polarity as indicated. \\
+	    PWR & Indicates test board has power. \\
+	    CRC & Checksum alert. \todo{Explain} \\
+	\end{tabular}
+	\label{fig:DTBphotoPanels}
+	\caption{Photograph of front (top) and back panel (bottom).}
     \end{center}
 \end{figure}
 
-\section{ROC/Module Test Adaptor}
+\section{ROC/Module Test Adaptor} \label{sec:ROCadapter}
 
 This connector is used to connect a single \gls{ROC} or a module. It has 68~pins and uses standard SCSI connectors. The connection has been succesfully tested to support ribbon cables of up to 1~m length.
 
