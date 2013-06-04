@@ -225,7 +225,11 @@ Now let's see if this actually works, i.e.~if the \gls{ROC} receives a command a
 
 We just set up the sending of commands. We are not yet capable of reading back from the \gls{ROC}. But we can see if the \gls{ROC} reacts to commands we send to it. \psicommand{getia} displays the current analog current. Try it out. It should be close to zero. Now send a command to the chip which should make him to draw some current. Setting the analog voltage in the chip, $V_\text{ana}$, will do the trick. Set $V_\text{ana}$ to some value, say \psicommand{vana 100} and check the current again. It should be higher. The \gls{ROC} actually received a command and we can see that something happens.
 
+Before we move on we need to set the remaining two delay values. A rising edge of the CTR signal should be on the rising edge of the clock. Do this by selecting pg\_sync for D1, CLK for A1 and CTR for A2. The token signal TIN is evaluated by the \gls{ROC} during a high period of the clock. Many settings are possible but one should be avoided: TIN rising exactly at the same time as the clock. Select TIN for A2 and play around with it. If you want to see a solution, you will find a possible set of timing constants in the next step.
+
 \section{Reading from the ROC}
+
+Now comes the next big step. We will not only send commands to the \gls{ROC} but want to see a real measured value from a single pixel. We will then interpret the signal to understand how the communication takes place. We will likely have to readjust our timing.
 
 \bigskip
 
