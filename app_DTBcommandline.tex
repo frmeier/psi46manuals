@@ -18,6 +18,11 @@ rpc     & Show RPC version \\
 rpcuser & Show RPC version of user commands \\
 comment & Show DTB info text \\
 help    & Shows a short command list \\
+\midrule
+\multicolumn{2}{l}{\textbf{Execution delay}} \\
+cdelay \psiparam{n}  & Wait for n clock cycles \\
+udelay \psiparam{us} & Wait for us microseconds \\
+mdelay \psiparam{ms} & Wait for ms milliseconds. Note: This command is handled by the computer, not the testboard. \\
 \bottomrule
 \end{tabular}
 }
