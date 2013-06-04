@@ -128,6 +128,13 @@ pdftitle={PhD thesis: LambdaB lifetime},%
 pdfsubject={CMS},%
 pdfkeywords={PhD thesis, CMS, physics, LambdaB baryon, lifetime measurement}}
 
+% this does the import of the values
+\def\vdef #1{\expandafter\def\csname #1\endcsname}
+\def\vuse #1{\csname #1\endcsname}
+\input values
+
+\input symbols
+
 \input glossary
 
 \begin{document}
