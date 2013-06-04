@@ -27,7 +27,7 @@ If you need help to set this up, please go to the \enquote{How To's} in chapter 
 
 %A first test is to see if supply voltages are present. Invoke \texttt{psi46test} and issue the command
 
-A basic test is to see if we can trigger on a signal and see something. For this test, connect an adapter card to the DTB but do not insert a chip holder. We program the built-in pulse generator to send a sync signal and a token. The sync signal is not routed to the chip. It is only used as a marker of the pulse sequence so that the oscilloscope has a meaningful signal to trigger the scope on. The token is a signal that would be passed to the ROC, if one is connected.
+A basic test is to see if we can trigger on a signal and see something. For this test, connect an adapter card to the DTB but do not insert a chip holder. We program the built-in pulse generator to send a sync signal and a token. The sync signal is not routed to the chip. It is only used as a marker of the pulse sequence so that the oscilloscope has a meaningful signal to trigger the scope on. The token is a signal that would be passed to the \gls{ROC}, if one is connected.
 
 Make the following connections:
 \begin{itemize}
@@ -88,11 +88,11 @@ We see what we expect: a sync and a token signal, as we observed. So we understa
 %---------------------------------------------------------------------
 \section{Basic communication with a ROC}
 
-Now we insert a ROC into the adapter board. Don't forget to check that nothing is running and all LED's are dark before inserting the chip. Make sure that you insert the chip card the right way, i.e.~the wirebonds should face towards the DTB.
+Now we insert a \gls{ROC} into the adapter board. Don't forget to check that nothing is running and all LED's are dark before inserting the chip. Make sure that you insert the chip card the right way, i.e.~the wirebonds should face towards the DTB.
 
 Add another cable to connect \psicommand{A2+} to the third channel of your scope.
 
-We want to see the ROC talking. For this we simply send a command to the chip and see what happens. For the moment it doesn't matter what we send out, sending \psicommand{cald} does the job. This command deletes all calibrate settings in the chip and is the only command which takes no parameter. So the sequence of commands in \texttt{psi46test} is:
+We want to see the \gls{ROC} talking. For this we simply send a command to the chip and see what happens. For the moment it doesn't matter what we send out, sending \psicommand{cald} does the job. This command deletes all calibrate settings in the chip and is the only command which takes no parameter. So the sequence of commands in \texttt{psi46test} is:
 
 \bigskip
 
@@ -123,19 +123,19 @@ To make things visible you need to use the scope in single trigger mode. You can
 \begin{figure}[h]
     \begin{center}
 	\includegraphics[width=0.7\textwidth]{img/tut_scope2.png}
-	\caption{Simple communication to the ROC. The first signal (yellow) shows the signal we trigger on, the \psicommand{send} signal. The second signal (magenta) is the clock and the third (cyan) the signal sent to the ROC. Observe that the timing of the signals are not yet correct.}
+	\caption{Simple communication to the \gls{ROC}. The first signal (yellow) shows the signal we trigger on, the \psicommand{send} signal. The second signal (magenta) is the clock and the third (cyan) the signal sent to the \gls{ROC}. Observe that the timing of the signals are not yet correct.}
 	\label{fig:tut_scope2}
     \end{center}
 \end{figure}
 
-The result shows the signal we trigger on. The \psicommand{send} signal is internal to the testboard and only available to our convenience for triggering. The clock is here to give an idea over what timeframe the action happens and as a reference frame for the timing. The activity spans over several clock cycles. It begins with the header addressing the ROC, followed by a bunch of other signals in a pattern we do not need to understand right now. In our example we did not set a specific ROC address (the value to talk to a specific ROC). If we would work with a module, 16 ROC's would be present. With this address we would choose to which of these we want to talk. The default value is \psicommand{0}. But how is this encoded? To address one ROC out of 16 we need four bits. Encoding 0 would end in \psicommand{b0000}. So we should see four zeroes, which is what we see. The length of one bit is a full clock cycle, i.e.~clock up and down. Try to count the clock cycles and make sure you understand how this works.
+The result shows the signal we trigger on. The \psicommand{send} signal is internal to the testboard and only available to our convenience for triggering. The clock is here to give an idea over what timeframe the action happens and as a reference frame for the timing. The activity spans over several clock cycles. It begins with the header addressing the \gls{ROC}, followed by a bunch of other signals in a pattern we do not need to understand right now. In our example we did not set a specific \gls{ROC} address (the value to talk to a specific \gls{ROC}). If we would work with a module, 16 \gls{ROC}'s would be present. With this address we would choose to which of these we want to talk. The default value is \psicommand{0}. But how is this encoded? To address one \gls{ROC} out of 16 we need four bits. Encoding 0 would end in \psicommand{b0000}. So we should see four zeroes, which is what we see. The length of one bit is a full clock cycle, i.e.~clock up and down. Try to count the clock cycles and make sure you understand how this works.
 
-You can change the ROC address to talk to by issuing \psicommand{select N}, where N is a number between 0 and 15 and see what changes. If you do e.g.~\psicommand{select b0111} (recall: a number starting with a b is interpreted as a binary number, which comes in handy here) then you see that the signal is low for a logical 0 and then three logical 1 follow. Play around with different numbers to make sure you understand this pattern.
+You can change the \gls{ROC} address to talk to by issuing \psicommand{select N}, where N is a number between 0 and 15 and see what changes. If you do e.g.~\psicommand{select b0111} (recall: a number starting with a b is interpreted as a binary number, which comes in handy here) then you see that the signal is low for a logical 0 and then three logical 1 follow. Play around with different numbers to make sure you understand this pattern.
 
 \section{Listening to the ROC}
-The result of the previous step shows the testboard talking to the ROC only. The real thing is to talk to the ROC and read back some information. But for this we need to work on some timing issues first. The ROC receives signals in an encoded form, as we have seen in the example above. The clock is used as the reference to synchronize all signals to.
+The result of the previous step shows the testboard talking to the \gls{ROC} only. The real thing is to talk to the \gls{ROC} and read back some information. But for this we need to work on some timing issues first. The \gls{ROC} receives signals in an encoded form, as we have seen in the example above. The clock is used as the reference to synchronize all signals to.
 
-What we will do first is to adjust the timing of signal to program the ROC relative to the clock. For this we use the same setup as before and start to set values for the delay of the clock signal \psicommand{clk} and the send data signal \psicommand{sda}. All delay values can be set as positive numbers up to a maximum of about 300. One unit corresponds to $1/20$ of a clock cycle. So setting a value of 20 would shift the delay by exactly one clock cycle. Issue the following command and see what happens:
+What we will do first is to adjust the timing of signal to program the \gls{ROC} relative to the clock. For this we use the same setup as before and start to set values for the delay of the clock signal \psicommand{clk} and the send data signal \psicommand{sda}. All delay values can be set as positive numbers up to a maximum of about 300. One unit corresponds to $1/20$ of a clock cycle. So setting a value of 20 would shift the delay by exactly one clock cycle. Issue the following command and see what happens:
 
 \bigskip
 
@@ -163,9 +163,9 @@ We can only set positive values. At some point we might want to have the ability
 
 \bigskip
 
-The change you see on the oscilloscope is minimal. The clock is shifted by half a cycle, so more or less inverted. Now we need to know how we have to set the \psicommand{sda} signal relative to the clock. The programming of the chip uses a modified $I^2C$ signal. Modified means here that not the full set of possibilities are implemented. \isqc{} is an industry standard to communicate with electronic devices and is widely used for example in the car industry. Our implementation differs that we can send data much faster but cannot read back on the same wire.
+The change you see on the oscilloscope is minimal. The clock is shifted by half a cycle, so more or less inverted. Now we need to know how we have to set the \psicommand{sda} signal relative to the clock. The programming of the chip uses a modified \isqc{} signal. Modified means here that not the full set of possibilities are implemented. \isqc{} is an industry standard to communicate with electronic devices and is widely used for example in the car industry. Our implementation differs that we can send data much faster but cannot read back on the same wire.
 
-$I^2C$ is a serial interface and uses a clock and a data wire to communicate. The following states are possible:
+\isqc{} is a serial interface and uses a clock and a data wire to communicate. The following states are possible:
 
 \bigskip
 
@@ -184,13 +184,13 @@ stop & rising edge & Data transfer ends \\
 
 All the interesting stuff goes on when clock is on high level. Before we try to analyse the signal in detail we adjust the timing. The very first change on \psicommand{sda} should be a drop from high to low while clock is high (start). So inspecting Fig.~\ref{fig:tut_scope2} shows that this is not the case. Try to shift the signal by setting the delay using the \psicommand{sda} command to the smallest possible value but not smaller than what we used for \psicommand{clk}. You should end up with something that looks like Fig.~\ref{fig:tut_scope3}
 
-\begin{figure}[h]
-    \begin{center}
-	\includegraphics[width=0.7\textwidth]{img/tut_scope3.png}
-	\caption{Same as in Fig.~\ref{fig:tut_scope2} but now the timing is correctly adjusted between clock and send data.}
-	\label{fig:tut_scope3}
-    \end{center}
-\end{figure}
+%\begin{figure}[h]
+%    \begin{center}
+%	\includegraphics[width=0.7\textwidth]{img/tut_scope3.png}
+%	\caption{Same as in Fig.~\ref{fig:tut_scope2} but now the timing is correctly adjusted between clock and send data.}
+%	\label{fig:tut_scope3}
+%    \end{center}
+%\end{figure}
 
 \begin{figure}[h]
     \begin{center}
@@ -200,9 +200,9 @@ All the interesting stuff goes on when clock is on high level. Before we try to 
     \end{center}
 \end{figure}
 
-Now we want to understand what is going on. Fig.~\ref{fig:tut_scope3} shows the relevant section. Let's see if we can identify all stages of the transmission. It first starts with a long idle section. Then the communication starts. While clock is high the signal edge transitions to low. All the following data is either 0 or 1 and is constant while clock is high. Then the signal edge rises while clock is high, the data transmission has ended and returns to idle. The data is arranged in groups of 5 bits. The first four are the data bits and the fifth is bit number~4 inverted. So if the data is e.g.~1001, then the fifth bit would be 0. The full group would be 10010. And if the data is 1000 then the full group would be 10001. The reason for this is to make sure that the signal is more balanced in 0 and 1. In CMS the data would be transferred to a optical transmission line. The receiver at the end of it has an auto-gain feature which would turn up the amplification if nothing happens for some time. Would a data transfer consist of a lot of zeroes, the signal would look constant for a while. This trick with adding a fifth inverted bit does the trick. 00000000 would end up as 0000100001.
+Now we want to understand what is going on. Fig.~\ref{fig:tut_scope3} shows the relevant section. Let's see if we can identify all stages of the transmission. It first starts with a long idle section. Then the communication starts. While clock is high the signal edge transitions to low. All the following data is either 0 or 1 and is constant while clock is high. Then the signal edge rises while clock is high, the data transmission has ended and returns to idle. The data is arranged in groups of 5 bits. The first four are the data bits and the fifth is bit number~4 inverted. So if the data is e.g.~1001, then the fifth bit would be 0. The full group would be 10010. And if the data is 1000 then the full group would be 10001. The reason for this is to make sure that the signal is more balanced in 0 and 1. In CMS the data would be transferred to an optical transmission line. The receiver at the end of it has an auto-gain feature which would increase the amplification if nothing happens for some time. Would a data transfer consist of a lot of zeroes, the signal would look constant for a while. This trick with adding a fifth inverted bit does the trick. 00000000 would end up as 0000100001.
 
-So what does this transmited data mean? The first group of four is the ROC address. In this case we used \psicommand{b1011} as address, so this is what we find. Adjsut your \psicommand{select} command to select b1011 if you want to see exactly the same output. The second group of four bits is the command. The possibilities are:
+So what does this transmitted data mean? The first group of four is the ROC address. In this case we used \psicommand{b1011} as address, so this is what we find. Adjust your \psicommand{select} command to select b1011 if you want to see exactly the same output. The second group of four bits is the command. The possibilities are:
 
 \bigskip
 
@@ -210,9 +210,9 @@ So what does this transmited data mean? The first group of four is the ROC addre
     \toprule
     Code & Meaning & Following parameters & Total length \\
     \midrule
-    1000 & dac programming (setdac)    & $2\times8$\,bits & 20\,bits \\
-    0100 & pixel programming           & $3\times8$\,bits & 28\,bits \\
-    0010 & calibration set             & $3\times8$\,bits & 28\,bits \\
+    1000 & dac programming (setdac)    & 2$\times$8\,bits & 20\,bits \\
+    0100 & pixel programming           & 3$\times$8\,bits & 28\,bits \\
+    0010 & calibration set             & 3$\times$8\,bits & 28\,bits \\
     0001 & calibration delete (cald) & no parameters & 4\,bits \\
     \bottomrule
 \end{tabular}
@@ -221,9 +221,9 @@ So what does this transmited data mean? The first group of four is the ROC addre
 
 Intentionally we sent the simplest command we can, \psicommand{cald}. So we expect just the four command bits 0001 and nothing else, as \psicommand{cald} takes no parameter.
 
-Now let's see if this actually works, i.e.~if the ROC receives a command and acts upon. First, we need to make sure that the ROC has the right address. Set its address to the same value as you used in te last \psicommand{select} command, i.e.~do \psicommand{rocaddr b1011}. This command works only in the case of a single ROC, as we do it now. It gives the ROC the specific address. To talk to it, the value after \psicommand{select} needs to match.
+Now let's see if this actually works, i.e.~if the \gls{ROC} receives a command and acts upon. First, we need to make sure that the \gls{ROC} has the right address. Set its address to the same value as you used in te last \psicommand{select} command, i.e.~do \psicommand{rocaddr b1011}. This command works only in the case of a single \gls{ROC}, as we do it now. It gives the \gls{ROC} the specific address. In a module, a \gls{ROC} gets its address via some hard-wired signals between the \gls{ROC} and the \gls{HDI} circuit. In our setup we do not have an \gls{HDI}, so some logic in the testboard emulates the function of a \gls{TBM} and we can tell this logic which address it should assign to the \gls{ROC}. To talk to it, the value after \psicommand{select} needs to match.
 
-Now, the command \psicommand{getia} displays the current analog current. Try it out. It should be close to zero. Now set the analog voltage in the chip, $V_\text{ana}$, to some value, say \psicommand{vana 100} and check the current again. It should be higher. The ROC actually received a command and we can see that something happens.
+We just set up the sending of commands. We are not yet capable of reading back from the \gls{ROC}. But we can see if the \gls{ROC} reacts to commands we send to it. \psicommand{getia} displays the current analog current. Try it out. It should be close to zero. Now send a command to the chip which should make him to draw some current. Setting the analog voltage in the chip, $V_\text{ana}$, will do the trick. Set $V_\text{ana}$ to some value, say \psicommand{vana 100} and check the current again. It should be higher. The \gls{ROC} actually received a command and we can see that something happens.
 
 \section{Reading from the ROC}
 
