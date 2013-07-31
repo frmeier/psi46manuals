@@ -27,12 +27,12 @@ First, test the connection. Start \texttt{psi46test} and send the \texttt{welcom
 
 %A first test is to see if supply voltages are present. Invoke \texttt{psi46test} and issue the command
 
-A basic test is to see if we can trigger on a signal and see something. For this test, connect an adapter card to the DTB but do not insert a chip holder. We program the built-in pulse generator to send a sync signal and a token. The sync signal is not routed to the chip. It is only used as a marker of the pulse sequence so that the oscilloscope has a meaningful signal to trigger the scope on. The token is a signal that would be passed to the \gls{ROC}, if one is connected.
+A basic test is to see if we can trigger on a signal and see something. For this test, connect an adapter card to the DTB but do not insert a chip holder. We program the built-in pulse generator to send a sync signal and a token. The sync signal is not routed to the chip. It is only used as a marker of the pulse sequence so that the oscilloscope has a meaningful signal to trigger the oscilloscope on. The token is a signal that would be passed to the \gls{ROC}, if one is connected.
 
 Make the following connections:
 \begin{itemize}
-    \item Connect the \enquote{D1} output of the DTB to the first channel of your scope
-    \item Connect the \enquote{A1+} output of the DTB to the second channel of your scope
+    \item Connect the \enquote{D1} output of the DTB to the first channel of your oscilloscope
+    \item Connect the \enquote{A1+} output of the DTB to the second channel of your oscilloscope
 \end{itemize}
 Then issue the following sequence from within \texttt{psi46test}:
 
@@ -56,7 +56,7 @@ Command & Brief description \\
 
 Here, one clock cycle is 25\,ns long, i.e.~the frequency is 40\,MHz, which is the same as the LHC collision frequency.
 
-Set up your scope to continuously trigger on the first channel (D1) and you should see something like what is shown in Fig.~\ref{fig:tut_scope1}. In case you cannot reproduce this, check your setup for mistakes and inspect the settings on your scope.
+Set up your oscilloscope to continuously trigger on the first channel (D1) and you should see something like what is shown in Fig.~\ref{fig:tut_scope1}. In case you cannot reproduce this, check your setup for mistakes and inspect the settings on your oscilloscope.
 \begin{figure}[h]
     \begin{center}
 	\includegraphics[width=0.7\textwidth]{img/tut_scope1.png}
@@ -65,9 +65,9 @@ Set up your scope to continuously trigger on the first channel (D1) and you shou
     \end{center}
 \end{figure}
 
-Now let us see what this sequence actually does.  The first two steps select the signals of the digital and analog outputs that are routed to the scope. The \psicommand{pgset} is used to define a pattern that will be generated every 1000 clock cycles again. Zoom out in the time domain and at a point you should see the signal from the following cycle. Reduce the number of cycles in \psicommand{pgloop} if necessary.
+Now let us see what this sequence actually does.  The first two steps select the signals of the digital and analog outputs that are routed to the oscilloscope. The \psicommand{pgset} is used to define a pattern that will be generated every 1000 clock cycles again. Zoom out in the time domain and at a point you should see the signal from the following cycle. Reduce the number of cycles in \psicommand{pgloop} if necessary.
 
-The pattern we use here consists of just one set of bits set at the begin of the cycle. This command is more powerful, as we will see later on. Here, we only ask the pulse generator to send a sync and a token out signal at the begin of the cycle and nothing else follows. The meaning of the terminating 0 in \psicommand{pgset 0 b100001 0} is that no other signal will follow.
+The pattern we use here consists of just one set of bits set at the begin of the cycle. This command is more powerful, as we will see later on. Here, we only ask the pulse generator to send a sync and a token out signal at the begin of the cycle and nothing else follows. The meaning of the terminating 0 in \psicommand{pgset 0 b100001 0} is that no other signal will follow. The table below tells you the meaning of the bits:
 %You can think of such a sequence as a small program. Using the command \psicommand{pgset} one can create pulse sequences to test different things. Our sequence has only one step where we create a pulse on the sync and the token signal. One step has a number, a bit pattern and a delay to the next pattern. If the delay is set to 0, the cycle ends, as it does in our example. The bit pattern is given as a binary number, starting with a \psicommand{p}. The following bits can be set:
 \begin{center}
 \begin{tabular}{lcccccc}
@@ -90,7 +90,7 @@ We see what we expect: a sync and a token signal, as we observed. So we understa
 
 Now we insert a \gls{ROC} into the adapter board. Don't forget to check that nothing is running and all LED's are dark before inserting the chip. Make sure that you insert the chip card the right way, i.e.~the wirebonds should face towards the DTB.
 
-Add another cable to connect \psicommand{A2+} to the third channel of your scope.
+Add another cable to connect \psicommand{A2+} to the third channel of your oscilloscope.
 
 We want to see the \gls{ROC} talking. For this we simply send a command to the chip and see what happens. For the moment it doesn't matter what we send out, sending \psicommand{cald} does the job. This command deletes all calibrate settings in the chip and is the only command which takes no parameter. So the sequence of commands in \texttt{psi46test} is:
 
@@ -106,7 +106,7 @@ Command & Brief description \\
 \psicommand{sda 0} & Resets some timing parameter \\
 \psicommand{tin 0} & Resets some timing parameter \\
 \psicommand{select 0} & Sets the address of the chip we want to talk to \\
-\psicommand{d1 \vuse{dsp:val:send}}  & Select the \psicommand{send} signal as the one we trigger on the scope \\
+\psicommand{d1 \vuse{dsp:val:send}}  & Select the \psicommand{send} signal as the one we trigger on the oscilloscope \\
 \psicommand{a1 \vuse{asp:val:CLK}}  & Select the clock signal for channel 2 \\
 \psicommand{a2 \vuse{asp:val:SDA}}  & Select the send data signal for channel 3 \\
 \psicommand{cald}  & Program a register on the ROC \\
@@ -118,7 +118,7 @@ Command & Brief description \\
 \bigskip
 
 The four timing parameters we just set to a default value of 0. We will adjust them in the next part of this tutorial.
-To make things visible you need to use the scope in single trigger mode. You can issue the \psicommand{cald} command as often as you want. You should see something like in Fig.~\ref{fig:tut_scope2}.
+To make things visible you need to use the oscilloscope in single trigger mode. You can issue the \psicommand{cald} command as often as you want. You should see something like in Fig.~\ref{fig:tut_scope2}.
 
 \begin{figure}[h]
     \begin{center}
@@ -223,9 +223,9 @@ Intentionally we sent the simplest command we can, \psicommand{cald}. So we expe
 
 Now let's see if this actually works, i.e.~if the \gls{ROC} receives a command and acts upon. First, we need to make sure that the \gls{ROC} has the right address. Set its address to the same value as you used in te last \psicommand{select} command, i.e.~do \psicommand{rocaddr b1011}. This command works only in the case of a single \gls{ROC}, as we do it now. It gives the \gls{ROC} the specific address. In a module, a \gls{ROC} gets its address via some hard-wired signals between the \gls{ROC} and the \gls{HDI} circuit. In our setup we do not have an \gls{HDI}, so some logic in the testboard emulates the function of a \gls{TBM} and we can tell this logic which address it should assign to the \gls{ROC}. To talk to it, the value after \psicommand{select} needs to match.
 
-We just set up the sending of commands. We are not yet capable of reading back from the \gls{ROC}. But we can see if the \gls{ROC} reacts to commands we send to it. \psicommand{getia} displays the current analog current. Try it out. It should be close to zero. Now send a command to the chip which should make him to draw some current. Setting the analog voltage in the chip, $V_\text{ana}$, will do the trick. Set $V_\text{ana}$ to some value, say \psicommand{vana 100} and check the current again. It should be higher. The \gls{ROC} actually received a command and we can see that something happens.
+We just set up the sending of commands. We are not yet capable of reading back from the \gls{ROC}. But we can see if the \gls{ROC} reacts to commands we send to it. \psicommand{getia} displays the current analog current. Try it out. It should be close to zero. Now send a command to the chip which should make him to draw some current. Setting the analog voltage in the chip, $V_\text{ana}$, will do the trick. Set $V_\text{ana}$ to some value, say \psicommand{vana 100} and check the current again. It should be higher. The \gls{ROC} actually received a command and we can see that something happens. Adjust the value so that $V_\text{ana}$ is around 24\,mA, which is about the current the analog circuitry in the \gls{ROC} should draw.
 
-Before we move on we need to set the remaining two delay values. A rising edge of the CTR signal should be on the rising edge of the clock. Do this by selecting pg\_sync for D1, CLK for A1 and CTR for A2. The token signal TIN is evaluated by the \gls{ROC} during a high period of the clock. Many settings are possible but one should be avoided: TIN rising exactly at the same time as the clock. Select TIN for A2 and play around with it. If you want to see a solution, you will find a possible set of timing constants in the next step.
+Before we move on we need to set the remaining two delay values. A rising edge of the CTR signal should be on the rising edge of the clock. Do this by selecting pg\_sync for D1, CLK for A1 and CTR for A2. You need to prepare a sequence for the signal generator to send a CTR. The token signal TIN is evaluated by the \gls{ROC} during a high period of the clock. Many settings are possible but one should be avoided: TIN rising exactly at the same time as the clock. Select TIN for A2 and play around with it. Again, make the proper sequence and adjust it. If you want to see a solution, you will find a possible set of timing constants in the next step.
 
 \section{Reading from the ROC}
 
