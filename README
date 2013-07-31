@@ -8,3 +8,5 @@ and enjoy. If you want to do just one pdfLaTeX iteration then
 
 does the job.
 
+To get the bibliography, you may need to run biber manually, i.e. biber manualNewTestboard
+

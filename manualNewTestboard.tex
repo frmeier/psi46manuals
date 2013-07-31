@@ -8,11 +8,11 @@
 
 \documentclass[paper=A4,pagesize,fontsize=11pt,draft=false,BCOR=6mm,DIV=13,bibliography=totoc]{scrreprt} % Dokumententyp
 \usepackage[english,german]{babel}
-\usepackage[babel,autostyle=true]{csquotes}
 \usepackage[style=numeric-comp,sorting=none]{biblatex}
 %\usepackage[cam,a4,center]{crop}
 %\usepackage{german}                   % deutsches Paket
 \usepackage[utf8]{inputenc}         % Codepage utf8
+\usepackage[babel,autostyle=true]{csquotes}
 \usepackage{helvet}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage[T1]{fontenc}
@@ -33,7 +33,7 @@
 \KOMAoptions{DIV=last}
 %\usepackage{framed}
 %\usepackage{cite}
-%\bibliography{.bib}
+\bibliography{manualNewTestboard.bib}
 %\usepackage[urw-garamond]{mathdesign}
 \usepackage[modulo]{lineno}
 
@@ -190,10 +190,14 @@ pdfkeywords={PhD thesis, CMS, physics, LambdaB baryon, lifetime measurement}}
 %=================================================================================================
 %\part{Appendices}\label{part.app} %-------------------------------------
 
+
+\printbibliography
+
 \begin{appendices}
 \input app_tables
 \input app_DTBcommandline
 \end{appendices}
+
 
 
 % ======================================================================

@@ -178,14 +178,14 @@ It is one of the features of this test board to provide high voltage for the sen
     \item The circuit design has been carried out with safety in mind and was done by experienced and trained engineers at PSI.
     \item The main circuit is operated with low voltage via a 6V/3A external power supply. Except for the HV circuit, no higher voltages than $\pm$6\,V appear anywhere on the circuit.
     \item All currents on the outlets are controlled and limited to appropriate values for regular operation of single ROC and modules.
-    \item The HV circuit is separate from all other functionality. A relais controls the HV circuit. Only pins 66 and 68 of the 68-pin connector are involved.
-    \item High voltage resistors of 102\,k$\Omega$ limit the current on the 68-pin outlet.
+    \item The HV circuit is separate from all other functionality. A relais controls the HV circuit. Only pins 66 and 68 of the 68-pin connector are involved. A schematic of the circuit is shown in Fig.~\ref{fig:hvcircuit}.
+    \item High voltage resistors of 102\,k$\Omega$ limits the current on the 68-pin outlet.
     \item The relais is specified by the manufacturer rated for 400\,V DC and 6\,A, tested at 4000\,V \cite{finderRelais}. For the very low currents of the order of $\mu$A in our application this relais is considered safe.
     \item If HV is turned off (i.e.~the relais is released), the high voltage to the 68-pin connector is slowly discharged against a 940\,k$\Omega$ resistor.
     \item The connector to the external power supply is a standard LEMO\,00 type connector, rated for 700\,V and tested at 2100\,V \cite{lemoConnector}.
     \item The connector is protected for an accidentaly swapped GND connection with a shrink-wrapped insulator tube.
     \item The HV GND is connected to the board GND via Jumper J7 on the board. Standard boards have this jumper set. Remove this jumper only for special applications where separate grounding is absolutely needed.
-    \item All HV lines are routed in the center of the board. Except for the contact pins, no exposition of HV is possible.
+    \item All HV lines are routed in the center of the board \cite{PDG2012}. Except for the contact pins, no exposition of HV is possible.
     \item The board is held in place by rails inside the case to keep a safe distance between pins and case.
 \end{itemize}
 
@@ -194,6 +194,14 @@ Observe that most likely the pins on any test adapter card atached to the 68-pin
 In doubt of the state of a specific test board, carry out the following checks:
 \begin{itemize}
     \item The Sensor Bias connector should have a insulating tube around its outer cylindrical part that prevents it from accidental contact with the case. Replace if missing or damaged.
-    \item Test that the sensor bias GND (pin 66 of 68-pin connector) is electrically connected to any of the GND pins, e.g.~pin 64. If there is no connection, jumper J8 inside on the board has been removed. Reattach the jumper (standard 2-pin jumper).
+    \item Test that the sensor bias GND (pin 66 of 68-pin connector) is electrically connected to any of the GND pins, e.g.~pin 64. These pins might be easier accessible for testing with one of the usual adapter cards. If there is no connection, jumper J8 (labelled on board) inside on the board has been removed. Reattach the jumper (standard 2-pin jumper).
 \end{itemize}
+
+\begin{figure}[hbtp]
+    \begin{center}
+	\includegraphics[width=.6\textwidth]{img/hvcircuit.pdf}
+	\caption{HV circuit of the test board.}
+	\label{fig:hvcircuit}
+    \end{center}
+\end{figure}
 
