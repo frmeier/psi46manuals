@@ -1,23 +1,32 @@
 \chapter{DTB description}
 
-The pixel testboard unit \enquote{Pixel DTB} is a data acquisition board specifically designed for the CMS pixel detector \gls{ROC}. Its key featires are:
-\begin{itemize}
-    \item An Altera Cyclone III FPGA to control the board and communications with the \gls{ROC}/module.
-    \item 128\,MB of RAM.
-    \item An internal MicroSD card slot.
-    \item A custom, programmable digital level translator chip.
-    \item FPGA programmable without use of JTAG interface (requires working operating system in FPGA flash memory).
-    \item Standard SCSI cables to connect to \gls{ROC}/module adapter.
-\end{itemize}
-This documentation describes the features of the testboard.
-
+The pixel testboard unit \enquote{Pixel DTB} is a data acquisition board specifically designed for the CMS pixel detector \gls{ROC}. It is capable to communicate with a selection of devices (single \gls{ROC}, \gls{TBM}, assembled modules etc.) via specifically designed adapter cards.
 \begin{figure}[hbtp]
     \begin{center}
 	\includegraphics[width=0.9\textwidth]{img/DTB_Diagram.pdf}
-	\label{fig:DTB_Diagram}
 	\caption{Block diagram of essential parts of the test board. See text for description.}
+	\label{fig:DTBDiagram}
     \end{center}
 \end{figure}
+
+Fig.~\ref{fig:DTBDiagram} shows a block diagram illustrating the DTB's main features, which are
+\begin{itemize}
+    \item An Altera Cyclone III FPGA to control the board and communications with the \gls{ROC}/module.
+    \item 128\,MB of DDR2 RAM.
+    \item An internal MicroSD card slot used for storage of non-volatile settings like test board name, MAC addresses etc. 
+    \item A custom, programmable digital level translator chip (LCDS--LVDS), which is identical to the one used in the full readout chain and capable of handling all levels needed for proper communication iwth ROC and TBM.
+    \item A jumper-programmable level converter to common signal levels like CMOS and NIM for external clock and triggering plus read-back of DTB internal didgital signals.
+    \item USB 2.0 and Ethernet interfaces.
+    \item FPGA programmable without use of JTAG interface via USB (requires working operating system in FPGA flash memory).
+    \item Standard 68-pin SCSI ribbon cables to connect to adapter cards, using lengths of up to 1\,m.
+    \item External power supply for 6\,V/3\,A.
+    \item DC/DC power regulators for all common voltages needed to operate the board and sensor devices attached. Two programmable supply voltages ($VA$ and $VD$) on the connector, both current and voltage measured via an ADC.
+    \item Software controlled relay for supplying bias voltage to sensors, common or separate ground selectable via internal jumper.
+    \item Programmable analog crosspoint switch to select analog signals from communication to or from adapter card.
+    \item 100\,MSamples/s ADC for analog signal readout on channels, suitable for analog \gls{ROC} or monitoring of digital signals, selectable via an analog crosspoint switch.
+    \item Two amplified analog signals available for direct hook-up to an oscilloscope, selectable via the crosspoint switch.
+\end{itemize}
+This documentation describes the features of the testboard.
 
 \begin{figure}[hbtp]
     \begin{center}
