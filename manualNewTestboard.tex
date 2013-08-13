@@ -57,6 +57,13 @@
     \usekomafont{descriptionlabel}%
 }
 
+%\makeatletter
+%\def\cmditem{%
+%       \@ifnextchar[ \@cmditem{\@noitemargtrue\@cmditem[\@itemlabel]}}
+%       \def\@cmditem[#1]{\item[#1]\mbox{}\\}
+%\makeatother
+\newcommand{\cmditem}[2]{\item[\texttt{#1}] \emph{#2}}
+
 % Dokumenteninfos
 % ----------------------------------------------------------------------
 \author{Frank Meier\footnote{\texttt{frank.meier@cern.ch}, University of Nebraska, Lincoln}\\based on information provided by\\Beat Meier and Hans-Christian Kästli\footnote{both Paul Scherrer Institut, Villigen, Switzerland}}
@@ -178,6 +185,7 @@ pdfkeywords={PhD thesis, CMS, physics, LambdaB baryon, lifetime measurement}}
 \input doclog
 \input tb_description
 \input roc_description
+\input psi46test
 \input tutorial
 \input howtos
 
