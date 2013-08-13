@@ -57,12 +57,7 @@
     \usekomafont{descriptionlabel}%
 }
 
-%\makeatletter
-%\def\cmditem{%
-%       \@ifnextchar[ \@cmditem{\@noitemargtrue\@cmditem[\@itemlabel]}}
-%       \def\@cmditem[#1]{\item[#1]\mbox{}\\}
-%\makeatother
-\newcommand{\cmditem}[2]{\item[\texttt{#1}] \emph{#2}}
+\newcommand{\cmditem}[2]{\item[\texttt{#1}] \texttt{\emph{#2}}}
 
 % Dokumenteninfos
 % ----------------------------------------------------------------------
