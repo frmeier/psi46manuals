@@ -14,8 +14,8 @@ Fig.~\ref{fig:DTBDiagram} shows a block diagram illustrating the DTB's main feat
     \item An Altera Cyclone III FPGA to control the board and communications with the \gls{ROC}/module.
     \item 128\,MB of DDR2 RAM.
     \item An internal MicroSD card slot used for storage of non-volatile settings like test board name, MAC addresses etc. 
-    \item A custom, programmable digital level translator chip (LCDS--LVDS), which is identical to the one used in the full readout chain and capable of handling all levels needed for proper communication iwth ROC and TBM.
-    \item A jumper-programmable level converter to common signal levels like CMOS and NIM for external clock and triggering plus read-back of DTB internal didgital signals.
+    \item A custom digital level translator chip (LCDS--LVDS), which is identical to the one used in the full readout chain and capable of handling all levels needed for proper communication with ROC and TBM.
+    \item A jumper-programmable level converter to common signal levels like CMOS and NIM for external clock and triggering plus read-back of DTB internal digital signals.
     \item USB 2.0 and Ethernet interfaces.
     \item FPGA programmable without use of JTAG interface via USB (requires working operating system in FPGA flash memory).
     \item Standard 68-pin SCSI ribbon cables to connect to adapter cards, using lengths of up to 1\,m.
@@ -26,7 +26,7 @@ Fig.~\ref{fig:DTBDiagram} shows a block diagram illustrating the DTB's main feat
     \item 100\,MSamples/s ADC for analog signal readout on channels, suitable for analog \gls{ROC} or monitoring of digital signals, selectable via an analog crosspoint switch.
     \item Two amplified analog signals available for direct hook-up to an oscilloscope, selectable via the crosspoint switch.
 \end{itemize}
-This documentation describes the features of the testboard.
+Fig.~\ref{fig:DTBphotoPanels} shows the front and rear panels.
 
 \begin{figure}[hbtp]
     \begin{center}
@@ -35,7 +35,7 @@ This documentation describes the features of the testboard.
 	\medskip
 
 	\begin{tabular}{lp{10cm}}
-	    Sensor Bias & Input socket for sensor bias. This is routed with separate ground lines to the test adapter. The unit has been tested and is goot for voltages up to 700\,V. Switched with a programmable relais. \\
+	    Sensor Bias & Input socket for sensor bias. Switched with a programmable relais. See section~\ref{sec:tbsafety} for important safety information. \\
 	    A1/A2 & Two symmetric analog outputs, programmable. $+$ and $-$ refer to the two polarities of the signal. Low impedance outputs, i.e.~can directly be connected to an oscilloscope without disturbing the sensor. \\
 	    ROC/Module Test Adapter & 68-pin standard SCSI connector to single ROC adapter card or module. Details see section~\ref{sec:ROCadapter}. \\
 	\end{tabular}
@@ -61,10 +61,14 @@ This documentation describes the features of the testboard.
 	    PWR & Indicates test board has power. \\
 	    CRC & Checksum alert. \todo{Explain} \\
 	\end{tabular}
-	\label{fig:DTBphotoPanels}
 	\caption{Photograph of front (top) and back panel (bottom).}
+	\label{fig:DTBphotoPanels}
     \end{center}
 \end{figure}
+
+Two signalling levels are in use for communication with a \gls{ROC}: \gls{LVDS} and \gls{LCDS}. \gls{LVDS} follows an industry standard \cite{wikiLVDS} which is in wide use for fast signal transfer. A differential voltage of about 350\,mV is used for signalling where the polarity is used to distinguish logical 0 from 1. This design allows for low power consumption and robustness when twisted-pairs or narrow routed lines are used. \gls{LCDS} is a custom interpretation of the same idea. Instead of a certain voltage level it operates with a defined current of approximately 1\,mA and uses the same ideas.
+
+\todo{Beat: In der Tabelle wird für Signale wie CTR, SDA etc. LCDS/LVDS angegeben, d.h. da gibt es eine Wahlmöglichkeit. Wie wird diese vorgenommen? Bitte prüfe meine Beschreibung hier. So ok?}
 
 \section{ROC/Module Test Adaptor} \label{sec:ROCadapter}
 
@@ -175,7 +179,7 @@ Observe that line~68 (outermost wire) carries the high-voltage. Protect cables i
     \end{center}
 \end{figure}
 
-\section{Safety}
+\section{Safety} \label{sec:tbsafety}
 
 It is one of the features of this test board to provide high voltage for the sensor bias via an external power supply, hooked up to the sensor bias connector. Therefore some precautions should be taken if this functionality is used.
 \begin{itemize}
