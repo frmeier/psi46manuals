@@ -14,13 +14,13 @@ Fig.~\ref{fig:DTBDiagram} shows a block diagram illustrating the DTB's main feat
     \item An Altera Cyclone III FPGA to control the board and communications with the \gls{ROC}/module.
     \item 128\,MB of DDR2 RAM.
     \item An internal MicroSD card slot used for storage of non-volatile settings like test board name, MAC addresses etc. 
-    \item A custom digital level translator chip (LCDS--LVDS), which is identical to the one used in the full readout chain and capable of handling all levels needed for proper communication with ROC and TBM.
-    \item A jumper-programmable level converter to common signal levels like CMOS and NIM for external clock and triggering plus read-back of DTB internal digital signals.
+    \item A custom digital level translator chip (LCDS--LVDS), capable of handling all levels needed for proper communication with ROC and TBM.
+    \item A jumper-programmable level converter to common signal levels like CMOS and NIM for external clock and triggering plus read-back of DTB internal digital signals. Standard version uses CMOS levels.
     \item USB 2.0 and Ethernet interfaces.
-    \item FPGA programmable without use of JTAG interface via USB (requires working operating system in FPGA flash memory).
-    \item Standard 68-pin SCSI ribbon cables to connect to adapter cards, using lengths of up to 1\,m.
+    \item FPGA programmable via USB (requires working operating system in FPGA flash memory). JTAG accessible inside for special purposes.
+    \item Standard 68-pin SCSI ribbon cables to connect to adapter cards, using lengths of up to 1\,m guaranteed, up to 4\,m seems to work.
     \item External power supply for 6\,V/3\,A.
-    \item DC/DC power regulators for all common voltages needed to operate the board and sensor devices attached. Two programmable supply voltages ($VA$ and $VD$) on the connector, both current and voltage measured via an ADC.
+    \item DC/DC power regulators for all common voltages (except bias voltage) needed to operate chips on attached devices. Two programmable supply voltages ($VA$ and $VD$) on the connector, both current and voltage measured via an ADC.
     \item Software controlled relay for supplying bias voltage to sensors, common or separate ground selectable via internal jumper.
     \item Programmable analog crosspoint switch to select analog signals from communication to or from adapter card.
     \item 100\,MSamples/s ADC for analog signal readout on channels, suitable for analog \gls{ROC} or monitoring of digital signals, selectable via an analog crosspoint switch.
@@ -66,32 +66,23 @@ Fig.~\ref{fig:DTBphotoPanels} shows the front and rear panels.
     \end{center}
 \end{figure}
 
+\section{LVDS and LCDS signalling} \label{sec:LVDSsignal}
 Two signalling levels are in use for communication with a \gls{ROC}: \gls{LVDS} and \gls{LCDS}. \gls{LVDS} follows an industry standard \cite{wikiLVDS} which is in wide use for fast signal transfer. A differential voltage of about 350\,mV is used for signalling where the polarity is used to distinguish logical 0 from 1. This design allows for low power consumption and robustness when twisted-pairs or narrow routed lines are used. \gls{LCDS} is a custom interpretation of the same idea. Instead of a certain voltage level it operates with a defined current of approximately 1\,mA and uses the same ideas.
 
 \todo{Beat: In der Tabelle wird für Signale wie CTR, SDA etc. LCDS/LVDS angegeben, d.h. da gibt es eine Wahlmöglichkeit. Wie wird diese vorgenommen? Bitte prüfe meine Beschreibung hier. So ok?}
 
 \section{ROC/Module Test Adaptor} \label{sec:ROCadapter}
 
-This connector is used to connect a single \gls{ROC} or a module. It has 68~pins and uses standard SCSI connectors\footnote{The connector on the board is a standard female connector, e.g.~Digi-Key part no. A33516-ND. Male connectors required, available as commodity items from electronics and computer supplies.}. The connection has been succesfully tested to support ribbon cables of up to 1~m length.
+This connector is used to connect a single \gls{ROC} or a module. It has 68~pins and uses standard SCSI Type~III connectors\footnote{The connector on the board is a standard female connector, e.g.~Digi-Key part no. A33516-ND. Male connectors required, available as commodity items from electronics and computer supplies.}. The connection has been succesfully tested to support ribbon cables of up to 4\,m length, a length of 1\,m is regarded safe.
 
-\todo{Beat: Genauer Steckertyp und Kabel, evtl. einen Referenzlieferanten angeben?}
+To manufacture cable use flat cable for SCSI only. The impedance should be around $115\pm20\,\Omega$ (balanced signal), 68~conductors with a spacing of 0.025\,in (0.635\,mm), e.g.~3M 3754 series cable.
 
-The wiring scheme is given in table~\ref{tab:ROCmoduleInterfaceCable} for the cable and the plug. Fig.~\ref{fig:ROCmoduleInterfaceConnector} shows a schematic of the plug. The sensitive high-frequency signals are carried out symmetrically. Grounded lines have been used to separate different signals. The following signal levels are used:
-
-\begin{description}
-    \item[power:]
-    \item[LCDS:]
-    \item[out:]
-    \item[LCDS/LVDS:]
-    \item[bidir:]
-    \item[analog:]
-\end{description}
-\todo{LCDS und LVDS Pegel: Erklären wie das bei uns genau definiert ist (das weicht vom Standard ab, oder?)}
+The wiring scheme is given in table~\ref{tab:ROCmoduleInterfaceCable} for the cable and the plug. Fig.~\ref{fig:ROCmoduleInterfaceConnector} shows a schematic of the plug. The sensitive high-frequency signals are carried out symmetrically. Grounded lines have been used to separate different signals.
 
 Observe that line~68 (outermost wire) carries the high-voltage. Protect cables in case your application makes use of the high-voltage supply.
 
 \begin{table}[p]
-    \caption{Connector}
+    \caption{Connector wiring scheme. Levels: \emph{power} means either ground or regulated power, LCDS/LVDS refers to signal levels as described in the text}
     {\tiny
 	\begin{longtable}{cclll}
 	    \toprule
