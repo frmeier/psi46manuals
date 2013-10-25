@@ -72,45 +72,64 @@ The digital CMS pixel chip, colloquially called \glsreset{ROC}\gls{ROC}, consist
 	\bigskip
 
 	{\scriptsize
-	\begin{tabular}{cll}
+	\begin{tabular}{clcl}
 	\toprule %-------------------------------------------------------------------------------------------------
-	Pin\# & Name         & Description \\
+	Pin\# & Name         & Type & Description \\
 	\midrule %-------------------------------------------------------------------------------------------------
-	 1 & GND\_CAP        & Output to external filter capacitances, connected to GND internally in the chip \\
-	 2 & GND             & Ground input \\
-	 3 & token\_in+      & \multirow{2}{*}{Readout token input} \\
-	 4 & token\_in-      &  \\
-	 5 & reset           & Hard chip reset, resets all double columns, I$^2$C, DAC's \\
-	 6 & sout+           & \multirow{2}{*}{Serial output of data} \\
-	 7 & sout-           &  \\
-	 8 & GND             & Ground input  \\
-	 9 & GND             & Ground input  \\
-	10 & GND             & Ground input  \\
-	11 & CAP\_VD+        & Output to external capacity filtering unregulated VD, internally connected to pad 18 \\
-	12 & cal\_trig\_res+ & \multirow{2}{*}{Combined input signal: calibrate/trigger/reset} \\
-	13 & cal\_trig\_res- &  \\
-	14 & clk+            & \multirow{2}{*}{40\,MHz clock input} \\
-	15 & clk-            &  \\
-	16 & VA+             & \multirow{2}{*}{Analog voltage +1.5\,V input} \\
-	17 & VA-             &  \\
-	18 & VC+             & Input to supply the comparators with +2.5\,V (same as VD+), see also pad 11 \\
-	19 & GND             & Ground input  \\
-	20 & GND             & Ground input  \\
-	21 & CAP\_DAC        & Output to external capacity filtering the internally regulated voltage supplying th DAC's \\
-	22 & i2c\_a3         & \multirow{4}{*}{Chip address bits 0 to 3} \\
-	23 & i2c\_a2         &  \\
-	24 & i2c\_a1         &  \\
-	25 & i2c\_a0         &  \\
-	26 & i2c\_dat+       & \multirow{2}{*}{I$^2$C data inputs SDA} \\
-	27 & i2c\_dat-       &  \\
-	28 & token\_out+     & \multirow{2}{*}{Readout token output} \\
-	29 & token\_out-     &  \\
-	30 & CAP\_dig\_reg   & Output to external capacitance filtering VD regulated \\
-	31 & VD+             & \multirow{2}{*}{Digital voltage +2.5\,V input} \\
-	32 & VD-             &  \\
-	33 & GND             & Ground input  \\
-	34 & GND             & Ground input  \\
-	35 & GND\_CAP        & Output to external filter capacitances, connected to GND internally in the chip \\
+	 1 & GND\_CAP        & out & External filter capacitances, connected to GND internally in the chip \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	 2 & GND             & in  & Ground \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	 3 & token\_in+      & in  & \multirow{2}{*}{Readout token} \\
+	 4 & token\_in-      & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	 5 & reset           & in  & Hard chip reset, resets all double columns, \isqc{}, DAC's \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	 6 & sout+           & out & \multirow{2}{*}{Serial output of data} \\
+	 7 & sout-           & out & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	 8 & GND             & in  & \multirow{3}{*}{Ground}  \\
+	 9 & GND             & in  & \\
+	10 & GND             & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	11 & CAP\_VD+        & out & External capacity filtering unregulated VD, internally connected to pad 18 \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	12 & cal\_trig\_res+ & in  & \multirow{2}{*}{Combined signal: calibrate/trigger/reset} \\
+	13 & cal\_trig\_res- & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	14 & clk+            & in  & \multirow{2}{*}{40\,MHz clock} \\
+	15 & clk-            & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	16 & VA+             & in  &\multirow{2}{*}{Analog voltage +1.5\,V} \\
+	17 & VA-             & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	18 & VC+             & in  & Input to supply the comparators with +2.5\,V (same as VD+), see also pad 11 \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	19 & GND             & in  & \multirow{2}{*}{Ground} \\
+	20 & GND             & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	21 & CAP\_DAC        & out & External capacity filtering the internally regulated voltage supplying th DAC's \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	22 & i2c\_a3         & in  & \multirow{4}{*}{Chip address bits 0 to 3} \\
+	23 & i2c\_a2         & in  & \\
+	24 & i2c\_a1         & in  & \\
+	25 & i2c\_a0         & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	26 & i2c\_dat+       & in  & \multirow{2}{*}{\isqc{} data SDA} \\
+	27 & i2c\_dat-       & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	28 & token\_out+     & out & \multirow{2}{*}{Readout token output} \\
+	29 & token\_out-     & out & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	30 & CAP\_dig\_reg   & out & External capacitance filtering VD regulated \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	31 & VD+             & in  & \multirow{2}{*}{Digital voltage +2.5\,V} \\
+	32 & VD-             & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	33 & GND             & in  & \multirow{2}{*}{Ground}\\
+	34 & GND             & in  & \\
+	\midrule %-------------------------------------------------------------------------------------------------
+	35 & GND\_CAP        & out & External filter capacitances, connected to GND internally in the chip \\
 	\bottomrule %-------------------------------------------------------------------------------------------------
 	\end{tabular}
 	}
