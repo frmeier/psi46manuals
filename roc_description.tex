@@ -114,36 +114,36 @@ The chip has 12 DAC's and 2 registers plus trim bits for each pixel. Table~\ref{
 	\midrule
 	\multicolumn{ 8}{l}{\textbf{Voltage Regulators}} \\ 
 	Vdd         &  1 &   mV    & 4 & 1700 & 2100 & 6 & Voltage regulator for digital supply \\ 
-	Vana        &  2 &   mA    & 8 & 5 & 65 & 90 & Current regulator for analog supply \\ 
+	Iana        &  2 &   mA    & 8 & 5 & 65 & 90 & Current regulator for analog supply \\ 
 	Vsh         &  3 &   mA    & 8 & 1 & 14 & 40 & Current regulator for sample \& hold circuit \\ 
 	Vcomp       &  4 &   mV    & 4 & 1800 & 2100 & 12 & Voltage regulator for comparator \\ 
 	\midrule
-	\multicolumn{ 8}{l}{\textbf{Analog PUC}} \\ 
-	VwllPr      &  7 &   mV    & 8 & 400 & 1300 & 60 & Preamplifier feedback  \\ 
-	VwllSh      &  9 &   mV    & 8 & 400 & 1300 & 60 & Shaper feedback \\ 
-	VHldDel     & 10 &   mV    & 8 & -1500 & -500 & 117 & Hold delay \\ 
-	Vtrim       & 11 &   mV    & 8 & -710 & -400 & 29 & Pixel trimming \\ 
-	VcThr       & 12 &   mV    & 8 & -1500 & -600 & 60 & Comparator threshold \\ 
-	\midrule
-	\multicolumn{ 8}{l}{\textbf{Pixel Readout}} \\ 
-	VIbias\_bus & 13 & $\mu$A  & 8 & 0 & 12 & 5 & Digital bus receiver \\ 
-	VIbias\_sf  & 14 & $\mu$A  & 4 & 0 & 50 & 6 & Analog bus receiver \\ 
-	VIColOr     & 22 & $\mu$A  & 8 & 0 & 200 & 20 & Current limiter \\ 
+	\multicolumn{ 8}{l}{\textbf{Analog control in pixel unit cell}} \\ 
+	FBPre       &  7 &   mV    & 8 & 400 & 1300 & 60 & Preamplifier feedback  \\ 
+	FBSh        &  9 &   mV    & 8 & 400 & 1300 & 60 & Shaper feedback \\ 
+	HoldDel     & 10 &   mV    & 8 & -1500 & -500 & 117 & Hold delay \\ 
+	TrimScale   & 11 &   mV    & 8 & -710 & -400 & 29 & Pixel trimming \\ 
+	GlobalThr   & 12 &   mV    & 8 & -1500 & -600 & 60 & Comparator threshold \\ 
+	%\midrule
+	%\multicolumn{ 8}{l}{\textbf{Pixel Readout}} \\ 
+	%VIbias\_bus & 13 & $\mu$A  & 8 & 0 & 12 & 5 & Digital bus receiver \\ 
+	%VIbias\_sf  & 14 & $\mu$A  & 4 & 0 & 50 & 6 & Analog bus receiver \\ 
+	%VIColOr     & 22 & $\mu$A  & 8 & 0 & 200 & 20 & Current limiter \\ 
 	\midrule
 	\multicolumn{ 8}{l}{\textbf{Double Column Readout}} \\ 
-	VOffsetOp   & 15 &   mV    & 8 & 1000 & 1500 & 90 & Charge amplifier offset \\ 
-	VOffsetRO   & 17 &   mV    & 8 & 1000 & 1500 & 76 & Voltage amplifier offset \\ 
-	VIon        & 18 & $\mu$A  & 8 & 0 & 100 & 115 & Voltage amplifier bias current \\ 
+	%VOffsetOp   & 15 &   mV    & 8 & 1000 & 1500 & 90 & Charge amplifier offset \\ 
+	PHOffset    & 17 &   mV    & 8 & 1000 & 1500 & 76 & Voltage amplifier offset \\ 
+	%VIon        & 18 & $\mu$A  & 8 & 0 & 100 & 115 & Voltage amplifier bias current \\ 
 	\midrule
 	\multicolumn{ 8}{l}{\textbf{Chip Readout}} \\ 
-	Vcomp\_ADC  & 19 & mV & 8  & 600 & 1050 & 100 & ADC comparator voltage \\ 
-	VIref\_ADC  & 20 & $\mu$A  & 8 & 0 & 12 & 160 & ADC reference current \\ 
+	ADCpower    & 19 & mV & 8  & 600 & 1050 & 100 & ADC comparator voltage \\ 
+	PHscale     & 20 & $\mu$A  & 8 & 0 & 12 & 160 & ADC reference current \\ 
 	\midrule
 	\multicolumn{ 8}{l}{\textbf{Others}} \\ 
-	Vcal        & 25 & mV      & 8 & 0 & 260/1800 & 150 & Calibrate pulse height, see also section 5.3.5 \\ 
-	CalDel      & 26 & nsec    & 8 & 55 & 205 &  & See chapter 7 \\ 
+	Vcal        & 25 & mV      & 8 & 0 & 260/1800 & 150 & Calibrate pulse height, see also section~\ref{sec.5.3.5} \\ 
+	CalDel      & 26 & nsec    & 8 & 55 & 205 &  & See chapter~\ref{sec.7} \\ 
 	WBC         & 254 & clocks & 8 & 0 & 255 &                 >70 & Trigger latency \\ 
-	CCR         & 253 &        & 8 &  &  &  & See section 5.3.5 \\ 
+	CCR         & 253 &        & 8 &  &  &  & See section~\ref{sec.5.3.5} \\ 
 	\bottomrule
 	\end{tabular}
 	}
