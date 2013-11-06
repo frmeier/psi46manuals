@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.1 r9760"
-   sodipodi:docname="ROC_DACschema.svg">
+   sodipodi:docname="ROC_DACschema_raw.svg">
   <defs
      id="defs4">
     <marker
@@ -53,9 +53,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.78113202"
-     inkscape:cx="570.66884"
-     inkscape:cy="217.63829"
+     inkscape:zoom="1.2296727"
+     inkscape:cx="440.55291"
+     inkscape:cy="282.69625"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -77,7 +77,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1586,5 +1586,43 @@
        id="path10639"
        d="m 341.17152,829.23616 c 0,-6.40097 0,-6.40097 0,-6.40097 l 216.03263,0"
        style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Mend)" />
+    <rect
+       y="995.57727"
+       x="27.689148"
+       height="11.815416"
+       width="58.103924"
+       id="rect5492"
+       style="opacity:0.98999999;fill:#000000;stroke:#000000;stroke-width:1.49133801;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text5494"
+       y="1004.8402"
+       x="33.740128"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         style="font-size:9px;font-weight:bold;fill:#ffffff;-inkscape-font-specification:Sans Bold"
+         y="1004.8402"
+         x="33.740128"
+         id="tspan5496"
+         sodipodi:role="line">VIColOr</tspan></text>
+    <rect
+       style="opacity:0.98999999;fill:#000000;stroke:#000000;stroke-width:1.49133801;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5498"
+       width="58.103924"
+       height="11.815416"
+       x="27.689148"
+       y="1015.5773" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="29.740128"
+       y="1024.8402"
+       id="text5500"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5502"
+         x="29.740128"
+         y="1024.8402"
+         style="font-size:9px;font-weight:bold;fill:#ffffff;-inkscape-font-specification:Sans Bold">VIbias_bus</tspan></text>
   </g>
 </svg>
