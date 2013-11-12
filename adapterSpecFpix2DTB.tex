@@ -33,7 +33,7 @@ Layer & Description \\
 	\midrule %-------------------------------------------------------------------------------------------------
 Top & Main signal layer \\
 2nd & GND plane \\
-3rd & Power plane, distributed $VA$, $VD$, and $HV$
+3rd & Power plane, distributed $VA$, $VD$, and $HV$ \\
 	\bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 \end{center}
@@ -112,7 +112,7 @@ The given values $\epsilon_r$, $h$ and $t$ were taken from the supplier (Sunston
 
 \begin{figure}[hbtp]
 	\begin{center}
-	\includegraphics[width=.3\textwidth]{img/impedmatch.pdf}
+	\includegraphics[width=.7\textwidth]{img/impedmatch.pdf}
 	\end{center}
 	\caption{Impedance matching network. Assuming $Z_1>Z_2$, this network adjusts for properly chosen $R_1$ and $R_2$ the imedances according to requirements. The line thickness on the PCB board indicate proper matching there as well.}
 	\label{fig:mpedmatch}
@@ -120,7 +120,7 @@ The given values $\epsilon_r$, $h$ and $t$ were taken from the supplier (Sunston
 
 \begin{figure}[hbtp]
 	\begin{center}
-	\includegraphics[width=.3\textwidth]{img/diffpair.pdf}
+	\includegraphics[width=.4\textwidth]{img/diffpair.pdf}
 	\end{center}
 	\caption{Sketch to define sme characteristic sizes in a differential pair trace on a PCB with a potential surface below the insulator.}
 	\label{fig:diffpair}
@@ -132,7 +132,7 @@ Current versions of the HDI have a Pt10000 RTD for measuring the temperature. A 
 
 \begin{figure}[hbtp]
 	\begin{center}
-	\includegraphics[width=.3\textwidth]{img/RTDcircuit.pdf}
+	\includegraphics[width=.7\textwidth]{img/RTDcircuit.pdf}
 	\end{center}
 	\caption{RTD circuit. Two ADC channels are used for measuring the voltage of the RTD and 3.3\,V channel. The latter is used as a reference. The resolution is estimated to be 2\,$\circ$C.}
 	\label{fig:RTDcircuit}
@@ -150,7 +150,7 @@ The size of the board are driven by the following requirements:
 \end{itemize}
 All this lead to the following specifications:
 \begin{itemize}
-    \item Dimension of 40 $\time$ 140\,mm$^2$
+    \item Dimension of 40 $\times$ 140\,mm$^2$
     \item No parts on the bottom side of the board
     \item SMK conenctor within less than 20\,mm of the edge towards the cold volume
 \end{itemize}
@@ -169,4 +169,16 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
     \item The vias can be covered with Kapton as well
     \item The pins on the SMK connector are hard to touch if the connector is closed (which is assumes to be the standard situation when HV is on). No special protection needed.
 \end{itemize}
+
+%===========================================================
+\chapter{}
+
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\textwidth]{img/FPix2DTBadapterDrawing.png}
+	\end{center}
+	\caption{Draft of a layout including some dimensions. Red traces: top layer. Blue traces and areas: power layer. Green traces: back layer. GND plane not shown for clarity. Holes have I.D. of 2.2\,mm, good for M2 and No.\,2 screws.}
+	\label{fig:FPix2DTBadapterDrawing}
+\end{figure}
 
