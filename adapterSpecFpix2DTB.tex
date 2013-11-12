@@ -3,9 +3,9 @@
 This board allows to connect FPix modules using a flex cable to connect it to the DTB. Its key features are:
 \begin{itemize}
     \item Make the proper electrical connections between the TBM of the module and the DTB. This includes matching the impedances.
-    \item Provide pass-through for the supply voltages.
+    \item Provide pass-through for the supply voltages to power the module.
     \item Provide a resistor bridge for measuring the temperature of the HDI using its RTD and two ADC channels in the DTB.
-    \item Has an 2\,kbit EEPOM to identify the type of adapter, connected to the DTB via its \isqc{} bus.
+    \item Has an 2\,kbit EEPROM to identify the type of adapter, connected to the DTB via its \isqc{} bus.
 \end{itemize}
 
 The following conventions are used throughout this document:
@@ -34,6 +34,7 @@ Layer & Description \\
 Top & Main signal layer \\
 2nd & GND plane \\
 3rd & Power plane, distributed $VA$, $VD$, and $HV$ \\
+Bottom & Remaining signals \\
 	\bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 \end{center}
@@ -42,7 +43,7 @@ Top & Main signal layer \\
 
 The signal connections between the TBM and the DTB are as follows:
 \begin{center}
-\begin{tabular}{llll}
+\begin{tabular}{lcll}
     \toprule %-------------------------------------------------------------------------------------------------
     TBM & direction & DTB & Comments \\
     \midrule %-------------------------------------------------------------------------------------------------
@@ -93,7 +94,7 @@ Z_2 = \frac{1}{\frac{1}{2R_1+Z_1}+\frac{1}{R_2}} = 62\,\Omega
 \end{equation}
 which is well within a few \% of the target impedances.
 
-The dimensions of the traces on the board were caluclated using the PCBcalc app provided by Agilent. The values have been chosen as:
+The dimensions of the traces on the board were calculated using the PCBcalc app provided by Agilent. The values have been chosen as:
 \begin{center}
 \begin{tabular}{lcc}
     \toprule %-------------------------------------------------------------------------------------------------
@@ -107,7 +108,7 @@ The dimensions of the traces on the board were caluclated using the PCBcalc app 
     \bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 \end{center}
-The given values $\epsilon_r$, $h$ and $t$ were taken from the supplier (Sunstone circuits). The other values were chosen on practical reasons, where $w$ has been chosen to be a bit larger than the smallest distance the supplier recommends.
+The given values $\epsilon_r$, $h$ and $t$ were taken from the supplier (Sunstone circuits). The other values were chosen on practical reasons, where $w$ has been chosen to be a bit larger than the smallest distance the supplier recommends and $s$ follows from the calculation.
 
 
 \begin{figure}[hbtp]
@@ -122,7 +123,7 @@ The given values $\epsilon_r$, $h$ and $t$ were taken from the supplier (Sunston
 	\begin{center}
 	\includegraphics[width=.4\textwidth]{img/diffpair.pdf}
 	\end{center}
-	\caption{Sketch to define sme characteristic sizes in a differential pair trace on a PCB with a potential surface below the insulator.}
+	\caption{Sketch to define some characteristic sizes in a differential pair trace on a PCB with a potential surface below the insulator.}
 	\label{fig:diffpair}
 \end{figure}
 
@@ -134,7 +135,7 @@ Current versions of the HDI have a Pt10000 RTD for measuring the temperature. A 
 	\begin{center}
 	\includegraphics[width=.7\textwidth]{img/RTDcircuit.pdf}
 	\end{center}
-	\caption{RTD circuit. Two ADC channels are used for measuring the voltage of the RTD and 3.3\,V channel. The latter is used as a reference. The resolution is estimated to be 2\,$\circ$C.}
+	\caption{RTD circuit. Two ADC channels are used for measuring the voltage of the RTD and 3.3\,V channel. The latter is used as a reference. The resolution is estimated to be $2\,^\circ$C.}
 	\label{fig:RTDcircuit}
 \end{figure}
 
@@ -143,8 +144,8 @@ Current versions of the HDI have a Pt10000 RTD for measuring the temperature. A 
 
 The size of the board are driven by the following requirements:
 \begin{itemize}
-    \item The PSI coldbox takes up to four modules, spaced by 60\,mm. The flex cables will therefore com out of the cold volume in the same spacing (center to center).
-    \item The SCSI connectors come in a width of 64\,mm. This is wider than the spacing just mentioned. This requires to turn them by 90$\circ$ and direct the SCSI cable perpendicular to the flex cables.
+    \item The PSI coldbox takes up to four modules, spaced by 60\,mm. The flex cables will therefore come out of the cold volume in the same spacing (center to center).
+    \item The SCSI connectors come in a width of 64\,mm. This is wider than the spacing just mentioned. This requires to turn them by $90^\circ$ and direct the SCSI cable perpendicular to the flex cables.
     \item The SMK connector needs to be close enough to the flex cable end, which sticks out of the cold volume by just 40\,mm.
     \item The height level of the SMK connector should match the height of the insulation lid of the cold volume.
 \end{itemize}
@@ -152,7 +153,7 @@ All this lead to the following specifications:
 \begin{itemize}
     \item Dimension of 40 $\times$ 140\,mm$^2$
     \item No parts on the bottom side of the board
-    \item SMK conenctor within less than 20\,mm of the edge towards the cold volume
+    \item SMK connector within less than 20\,mm of the edge towards the cold volume
 \end{itemize}
 
 \section{HV protection}
@@ -162,23 +163,44 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
     \item There are some spots on the board where a HV is exposed:
     \begin{enumerate}
 	\item HV pin at the SCSI connector (pin 68). Accessible on the back of the board.
+    
+	This pin can be covered by Kapton foil, mounted by Kapton tape
 	\item Two vias around the SMK connector.
+    
+	Can be covered with Kapton as well
 	\item Four pins on the SMK connector.
+    
+	These pins are hard to touch if the connector is closed (which is assumes to be the standard situation when HV is on). No special protection needed.
     \end{enumerate}
-    \item The HV pin at the SCSI connector can be covered by Kapton foil, mounted by Kapton tape
-    \item The vias can be covered with Kapton as well
-    \item The pins on the SMK connector are hard to touch if the connector is closed (which is assumes to be the standard situation when HV is on). No special protection needed.
 \end{itemize}
 
+\section{Other requirements}
+\begin{itemize}
+    \item All differential signals should be accessible as spy pads, preferrably on the chip side for debugging. For a later version of the board, this requirements may be dropped in favour of less parasitc capacitance.
+    \item In the same spirit, the power voltages and the RTD signals should be available as well.
+    \item Mounting holes should be placed at appropriate locations.
+    \item Two holes in the vicinity of the SMK connector should be placed to mount an optional cable guide and/or strain relief.
+    \item If tracing of TBM signals cannot be made without using vias, less important signals like the return clocks should be taken for this. In any case, vias in differential signals will be applied in pairs.
+\end{itemize}
+
+
 %===========================================================
-\chapter{}
+\chapter{Drawings}
 
 
 \begin{figure}[hbtp]
 	\begin{center}
 	\includegraphics[width=1.0\textwidth]{img/FPix2DTBadapterDrawing.png}
 	\end{center}
-	\caption{Draft of a layout including some dimensions. Red traces: top layer. Blue traces and areas: power layer. Green traces: back layer. GND plane not shown for clarity. Holes have I.D. of 2.2\,mm, good for M2 and No.\,2 screws.}
+	\caption{Draft of a layout including some dimensions. Red traces: top layer. Blue traces and areas: power layer. Green traces: back layer. GND plane not shown for clarity. Holes have I.D. of 2.2\,mm, good for M2 and No.\,2 screws. Mounting on a cold box is done using the two screws 15\,mm off the right edge and two screws in the holes of the SCSI connector. Spy pads are available near the impedance matching networks and labelled for usability. Same is true for the other spy pads.}
 	\label{fig:FPix2DTBadapterDrawing}
+\end{figure}
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=1.0\textwidth]{img/FPix2DTB_90degSchematic.pdf}
+	\end{center}
+	\caption{Schematic of the circuit.}
+	\label{fig:FPix2DTB_90degSchematic}
 \end{figure}
 
