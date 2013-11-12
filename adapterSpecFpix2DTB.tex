@@ -1,6 +1,12 @@
 \chapter{Introduction}
 
-This board allows to connect FPix modules using a flex cable to connect it to the DTB.
+This board allows to connect FPix modules using a flex cable to connect it to the DTB. Its key features are:
+\begin{itemize}
+    \item Make the proper electrical connections between the TBM of the module and the DTB. This includes matching the impedances.
+    \item Provide pass-through for the supply voltages.
+    \item Provide a resistor bridge for measuring the temperature of the HDI using its RTD and two ADC channels in the DTB.
+    \item Has an 2\,kbit EEPOM to identify the type of adapter, connected to the DTB via its \isqc{} bus.
+\end{itemize}
 
 The following conventions are used throughout this document:
 \begin{itemize}
@@ -11,7 +17,12 @@ The following conventions are used throughout this document:
     \item VA: Supply voltage for analog circuits in the ROC.
     \item VD: Supply voltage for digital circuits in the TBM and ROC.
     \item 3V3: 3.3\,V supply for support circuits.
+    \item TBM: Token bit manager, custom ASIC on the HDI
+    \item HDI: High-density interconnect, custom circuit on modules, makes connections between TBM and ROC
+    \item ROC: Read-out chip
+    \item DTB: Digital test board
 \end{itemize}
+This document is not a full documentation of the whole chain. Please refer to the specific documents about other parts.
 
 \chapter{Design considerations}
 The board has been designed as a 4-layer PCB with the following topology:
@@ -29,7 +40,79 @@ Top & Main signal layer \\
 
 \section{Signal routing}
 
+The signal connections between the TBM and the DTB are as follows:
+\begin{center}
+\begin{tabular}{llll}
+    \toprule %-------------------------------------------------------------------------------------------------
+    TBM & direction & DTB & Comments \\
+    \midrule %-------------------------------------------------------------------------------------------------
+    \texttt{OutA}        & $\rightarrow$ & \texttt{SDATA1} & \\
+    \texttt{RDa\_Out}    & $\rightarrow$ & \texttt{TOUT}   & \\
+    \texttt{SD\_In}      & $\leftarrow$  & \texttt{SDA}    & \\
+    \texttt{Trig\_In}    & $\leftarrow$  & \texttt{CTR}    & \\
+    \texttt{Clk\_In}     & $\leftarrow$  & \texttt{CLK}    & \\
+    \texttt{RClk\_Out}   & $\rightarrow$ & \texttt{SDATA3} & Not for regular use. Some TBM versions may not provide it. \\
+    \texttt{160MHz\_Out} & $\rightarrow$ & \texttt{SDATA4} & Not for regular use. Some TBM versions may not provide it. \\
+    \bottomrule %-------------------------------------------------------------------------------------------------
+\end{tabular}
+\end{center}
+
+
 \section{Impedance matching of TBM signals}
+
+The impedances of the two outer connections are not the same:
+\begin{center}
+\begin{tabular}{lc}
+    \toprule %-------------------------------------------------------------------------------------------------
+    Connection & Impedance $Z$ \\
+    \midrule %-------------------------------------------------------------------------------------------------
+    SCSI 68 pin & 115\,$\Omega$ \\
+    SMK flex cable & 60\,$\Omega$ \\
+    \bottomrule %-------------------------------------------------------------------------------------------------
+\end{tabular}
+\end{center}
+
+The impedance matching is done following a proposal by Beat Meier of PSI and is sketched out in Fig.~\ref{fig:mpedmatch}. The values calculated are:
+\begin{center}
+\begin{tabular}{lc}
+    \toprule %-------------------------------------------------------------------------------------------------
+    Resistor & value \\
+    \midrule %-------------------------------------------------------------------------------------------------
+    $R_1$ & 39\,$\Omega$ \\
+    $R_2$ & 91\,$\Omega$ \\
+    \bottomrule %-------------------------------------------------------------------------------------------------
+\end{tabular}
+\end{center}
+This choice of resistors are available in the E24 series and lead to the following differential impedances:
+\begin{equation}
+Z_1 = 2R_1 + \frac{1}{1/R_2 + 1/Z_2} = 115\,\Omega
+\end{equation}
+and
+\begin{equation}
+Z_2 = \frac{1}{\frac{1}{2R_1+Z_1}+\frac{1}{R_2}} = 62\,\Omega
+\end{equation}
+which is well within a few \% of the target impedances.
+
+The 
+
+
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=.3\textwidth]{img/impedmatch.pdf}
+	\end{center}
+	\caption{Impedance matching network. Assuming $Z_1>Z_2$, this network adjusts for properly chosen $R_1$ and $R_2$ the imedances according to requirements. The line thickness on the PCB board indicate proper matching there as well.}
+	\label{fig:mpedmatch}
+\end{figure}
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=.3\textwidth]{img/diffpair.pdf}
+	\end{center}
+	\caption{Sketch to define sme characteristic sizes in a differential pair trace on a PCB with a potential surface below the insulator.}
+	\label{fig:diffpair}
+\end{figure}
+
 
 \section{RTD bridge}
 
