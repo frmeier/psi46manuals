@@ -143,8 +143,16 @@ Current versions of the HDI have a Pt10000 RTD for measuring the temperature. A 
 
 The size of the board are driven by the following requirements:
 \begin{itemize}
-    \item The PSI coldbox takes up to four modules, spaced by 6\,cm. The flex cables will therefore com out of the cold volume in the same spacing (center to center).
-    \item The SCSI connectors come 
+    \item The PSI coldbox takes up to four modules, spaced by 60\,mm. The flex cables will therefore com out of the cold volume in the same spacing (center to center).
+    \item The SCSI connectors come in a width of 64\,mm. This is wider than the spacing just mentioned. This requires to turn them by 90$\circ$ and direct the SCSI cable perpendicular to the flex cables.
+    \item The SMK connector needs to be close enough to the flex cable end, which sticks out of the cold volume by just 40\,mm.
+    \item The height level of the SMK connector should match the height of the insulation lid of the cold volume.
+\end{itemize}
+All this lead to the following specifications:
+\begin{itemize}
+    \item Dimension of 40 $\time$ 140\,mm$^2$
+    \item No parts on the bottom side of the board
+    \item SMK conenctor within less than 20\,mm of the edge towards the cold volume
 \end{itemize}
 
 \section{HV protection}
@@ -154,7 +162,11 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
     \item There are some spots on the board where a HV is exposed:
     \begin{enumerate}
 	\item HV pin at the SCSI connector (pin 68). Accessible on the back of the board.
-	\item Two vias around the SMK connector
+	\item Two vias around the SMK connector.
+	\item Four pins on the SMK connector.
     \end{enumerate}
+    \item The HV pin at the SCSI connector can be covered by Kapton foil, mounted by Kapton tape
+    \item The vias can be covered with Kapton as well
+    \item The pins on the SMK connector are hard to touch if the connector is closed (which is assumes to be the standard situation when HV is on). No special protection needed.
 \end{itemize}
 
