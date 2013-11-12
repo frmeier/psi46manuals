@@ -1,0 +1,48 @@
+\chapter{Introduction}
+
+This board allows to connect FPix modules using a flex cable to connect it to the DTB.
+
+The following conventions are used throughout this document:
+\begin{itemize}
+    \item SCSI-connector: this refers to the 68-pin connector, which will be used to connect the adapter to the DTB.
+    \item SMK-connector: this is a 2$\times$20 pin connector to connect to the FPix module using standard FPix flex cables.
+    \item GND: ground.
+    \item HV: High voltage, routed through the DTB and supplied by an external power supply.
+    \item VA: Supply voltage for analog circuits in the ROC.
+    \item VD: Supply voltage for digital circuits in the TBM and ROC.
+    \item 3V3: 3.3\,V supply for support circuits.
+\end{itemize}
+
+\chapter{Design considerations}
+The board has been designed as a 4-layer PCB with the following topology:
+\begin{center}
+\begin{tabular}{cc}
+	\toprule %-------------------------------------------------------------------------------------------------
+Layer & Description \\
+	\midrule %-------------------------------------------------------------------------------------------------
+Top & Main signal layer \\
+2nd & GND plane \\
+3rd & Power plane, distributed $VA$, $VD$, and $HV$
+	\bottomrule %-------------------------------------------------------------------------------------------------
+\end{tabular}
+\end{center}
+
+\section{Signal routing}
+
+\section{Impedance matching of TBM signals}
+
+\section{RTD bridge}
+
+\section{Form factor}
+
+\section{HV protection}
+High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV from a HV power supply and passes it via a 100\,k$\Omega$ resistor to the SCSI cable. See the DTB documentation about its HV safety.}. The following measures have been taken:
+\begin{itemize}
+    \item The HV is routed entirely in an inner layer.
+    \item There are some spots on the board where a HV is exposed:
+    \begin{enumerate}
+	\item HV pin at the SCSI connector (pin 68). Accessible on the back of the board.
+	\item Two vias around the SMK connector
+    \end{enumerate}
+\end{itemize}
+
