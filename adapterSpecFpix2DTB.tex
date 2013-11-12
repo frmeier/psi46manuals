@@ -93,8 +93,21 @@ Z_2 = \frac{1}{\frac{1}{2R_1+Z_1}+\frac{1}{R_2}} = 62\,\Omega
 \end{equation}
 which is well within a few \% of the target impedances.
 
-The 
-
+The dimensions of the traces on the board were caluclated using the PCBcalc app provided by Agilent. The values have been chosen as:
+\begin{center}
+\begin{tabular}{lcc}
+    \toprule %-------------------------------------------------------------------------------------------------
+    Parameter & Case 115\,$\Omega$ & Case 60\,$\Omega$ \\
+    \midrule %-------------------------------------------------------------------------------------------------
+    Dielectric constant $\epsilon_r$ & \multicolumn{2}{c}{4.20 (FR-4)} \\
+    $h$ & \multicolumn{2}{c}{11.90\,mil (0.30\,mm)} \\
+    $t$ & \multicolumn{2}{c}{1.70\,mil (0.043\,mm)} \\
+    $w$ & 8.2\,mil (0.21\,mm) & 27\,mil (0.68\,mm) \\
+    $s$ & 7.0\,mil (0.18\,mm) & 7.0\,mil (0.18\,mm) \\
+    \bottomrule %-------------------------------------------------------------------------------------------------
+\end{tabular}
+\end{center}
+The given values $\epsilon_r$, $h$ and $t$ were taken from the supplier (Sunstone circuits). The other values were chosen on practical reasons, where $w$ has been chosen to be a bit larger than the smallest distance the supplier recommends.
 
 
 \begin{figure}[hbtp]
@@ -115,8 +128,24 @@ The
 
 
 \section{RTD bridge}
+Current versions of the HDI have a Pt10000 RTD for measuring the temperature. A circuit proposed by M. Matulik is shown in Fig.~\ref{fig:RTDcircuit}. This circuit is included and hooked up to two ADC channels of the DTB available on the SCSI connector.
+
+\begin{figure}[hbtp]
+	\begin{center}
+	\includegraphics[width=.3\textwidth]{img/RTDcircuit.pdf}
+	\end{center}
+	\caption{RTD circuit. Two ADC channels are used for measuring the voltage of the RTD and 3.3\,V channel. The latter is used as a reference. The resolution is estimated to be 2\,$\circ$C.}
+	\label{fig:RTDcircuit}
+\end{figure}
+
 
 \section{Form factor}
+
+The size of the board are driven by the following requirements:
+\begin{itemize}
+    \item The PSI coldbox takes up to four modules, spaced by 6\,cm. The flex cables will therefore com out of the cold volume in the same spacing (center to center).
+    \item The SCSI connectors come 
+\end{itemize}
 
 \section{HV protection}
 High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV from a HV power supply and passes it via a 100\,k$\Omega$ resistor to the SCSI cable. See the DTB documentation about its HV safety.}. The following measures have been taken:
