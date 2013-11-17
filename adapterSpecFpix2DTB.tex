@@ -1,11 +1,12 @@
 \chapter{Introduction}
 
-This board allows to connect FPix modules using a flex cable to connect it to the DTB. Its key features are:
+This board allows to connect FPix modules (Phase-I upgrade) using a flex cable to connect it to the DTB. Its key features are:
 \begin{itemize}
     \item Make the proper electrical connections between the TBM of the module and the DTB. This includes matching the impedances.
     \item Provide pass-through for the supply voltages to power the module.
     \item Provide a resistor bridge for measuring the temperature of the HDI using its RTD and two ADC channels in the DTB.
     \item Has an 2\,kbit EEPROM to identify the type of adapter, connected to the DTB via its \isqc{} bus.
+    \item Can be mounted on a PSI cold box in a configuration of four boards.
 \end{itemize}
 
 The following conventions are used throughout this document:
@@ -22,7 +23,7 @@ The following conventions are used throughout this document:
     \item ROC: Read-out chip
     \item DTB: Digital test board
 \end{itemize}
-This document is not a full documentation of the whole chain. Please refer to the specific documents about other parts.
+This document is not a full documentation of the whole chain. Please refer to the specific documents about other parts. Most of this documentation can be found via \url{https://twiki.cern.ch/twiki/bin/viewauth/CMS/Psi46}
 
 \chapter{Design considerations}
 The board has been designed as a 4-layer PCB with the following topology:
@@ -33,7 +34,7 @@ Layer & Description \\
 	\midrule %-------------------------------------------------------------------------------------------------
 Top & Main signal layer \\
 2nd & GND plane \\
-3rd & Power plane, distributed $VA$, $VD$, and $HV$ \\
+3rd & Power plane, distributes \emph{VA}, \emph{VD}, and \emph{HV} \\
 Bottom & Remaining signals \\
 	\bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
@@ -57,7 +58,7 @@ The signal connections between the TBM and the DTB are as follows:
     \bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 \end{center}
-
+The two signals \texttt{RClk\_Out} and \texttt{160MHz\_Out} are for testing purposes in some versions of the TBM. Connecting them to \texttt{SDATA3} or \texttt{SDATA4} allows to study the clock behaviour using the 400\,MHz deserializer, which internally uses 8-times oversampling.
 
 \section{Impedance matching of TBM signals}
 
@@ -145,7 +146,7 @@ Current versions of the HDI have a Pt10000 RTD for measuring the temperature. A 
 The size of the board are driven by the following requirements:
 \begin{itemize}
     \item The PSI coldbox takes up to four modules, spaced by 60\,mm. The flex cables will therefore come out of the cold volume in the same spacing (center to center).
-    \item The SCSI connectors come in a width of 64\,mm. This is wider than the spacing just mentioned. This requires to turn them by $90^\circ$ and direct the SCSI cable perpendicular to the flex cables.
+    \item The SCSI connectors come in a width of 64\,mm. This is wider than the spacing just mentioned. This requires to turn them by 90$^\circ$ and direct the SCSI cable perpendicular to the flex cables.
     \item The SMK connector needs to be close enough to the flex cable end, which sticks out of the cold volume by just 40\,mm.
     \item The height level of the SMK connector should match the height of the insulation lid of the cold volume.
 \end{itemize}
@@ -176,7 +177,7 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
 
 \section{Other requirements}
 \begin{itemize}
-    \item All differential signals should be accessible as spy pads, preferrably on the chip side for debugging. For a later version of the board, this requirements may be dropped in favour of less parasitc capacitance.
+    \item All differential signals should be accessible as spy pads, preferrably on the chip side for debugging. For a later version of the board, this requirements may be dropped in favour of less parasitic capacitance.
     \item In the same spirit, the power voltages and the RTD signals should be available as well.
     \item Mounting holes should be placed at appropriate locations.
     \item Two holes in the vicinity of the SMK connector should be placed to mount an optional cable guide and/or strain relief.
@@ -192,7 +193,7 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
 	\begin{center}
 	\includegraphics[width=1.0\textwidth]{img/FPix2DTBadapterDrawing.png}
 	\end{center}
-	\caption{Draft of a layout including some dimensions. Red traces: top layer. Blue traces and areas: power layer. Green traces: back layer. GND plane not shown for clarity. Holes have I.D. of 2.2\,mm, good for M2 and No.\,2 screws. Mounting on a cold box is done using the two screws 15\,mm off the right edge and two screws in the holes of the SCSI connector. Spy pads are available near the impedance matching networks and labelled for usability. Same is true for the other spy pads.}
+	\caption{Draft of a layout including some dimensions. Red traces: top layer. Light blue traces and areas: power layer. Green traces: back layer. GND plane not shown for clarity. Holes have I.D. of 2.2\,mm, good for M2 and No.\,2 screws. Mounting on a cold box is done using the four holes at the edges. The two other holes besides the SMK connector are foreseen to mount a cable guide. Spy pads are available near the impedance matching networks and labelled for usability. Same is true for the other spy pads.}
 	\label{fig:FPix2DTBadapterDrawing}
 \end{figure}
 
@@ -203,4 +204,26 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
 	\caption{Schematic of the circuit.}
 	\label{fig:FPix2DTB_90degSchematic}
 \end{figure}
+
+\section{Bill of materials}
+
+{\footnotesize
+\begin{tabular}{cp{2.2cm}lclll}
+	\toprule %-------------------------------------------------------------------------------------------------
+Id & Designator & Package & Quantity & Designation & Supplier & Ref \\ 
+	\midrule %-------------------------------------------------------------------------------------------------
+1 & C1, C3, C4 & SM0603 & 3 & 100n & Digi-key & 1276-1011-1-ND \\ 
+2 & C2 & SM0603 & 1 & 1u & Digi-key & 587-1248-1-ND \\ 
+3 & J1 & SCSI68up & 1 & CONN-SCSI68 & Digi-key & A31826-ND \\ 
+4 & J2 & SMK20 & 1 & CONN-SMK20 & SMK & Fermilab, Sergey Los \\ 
+5 & JP1 & jumper & 1 & JUMPER &  & piece of wire \\ 
+6 & R16, R18, R21, R19, R15, R13, R12, R10, R9, R7, R6, R4, R3, R1 & SM0402 & 14 & 39 & Digi-key & P39JCT-ND \\ 
+7 & R2, R5, R8, R11, R14, R20, R17 & SM0402 & 7 & 91 & Digi-key & P91JCT-ND \\ 
+8 & R22, R25, R26 & SM0603 & 3 & 10k 0.1\% & Digi-key & P10KDBCT-ND \\ 
+9 & R23, R24 & SM0603 & 2 & 10k 5\% & Digi-key & P10KGCT-ND \\ 
+10 & U1 & SO8N & 1 & 24C02 & Digi-key & AT24C02C-SSHM-T SL901CT-ND \\ 
+	\bottomrule %-------------------------------------------------------------------------------------------------
+\end{tabular}
+}
+
 
