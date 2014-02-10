@@ -10,3 +10,5 @@ does the job.
 
 To get the bibliography, you may need to run biber manually, i.e. biber DTBmanual
 
+If you like to see what is done with make, have a look into Variables.ini and edit it to your needs.
+
