@@ -25,6 +25,24 @@ The following conventions are used throughout this document:
 \end{itemize}
 This document is not a full documentation of the whole chain. Please refer to the specific documents about other parts. Most of this documentation can be found via \url{https://twiki.cern.ch/twiki/bin/viewauth/CMS/Psi46}
 
+\section{Change log}
+\begin{tabular}{cc}
+    \toprule
+    Version of this document & Version of the board \\
+    \midrule
+    0.0 & 1.1 \\
+    1.0 & 2.0 \\
+\end{tabular}
+
+Changes to version 2.0 of module:
+\begin{itemize}
+    \item Removed signal networks for \texttt{RClk\_Out} and \texttt{160MHz\_Out}. The latter is no longer present in TBM chips after version 7, the return clock is not needed.
+    \item Signals reshuffled on cable between module and adapter (consequence of previous change). This renders v2.0 of board \textbf{incompatible} to old versions of the HDI.
+    \item Added an LED to display power status (otherwise only visible on back of DTB).
+    \item Adjusted impedance matching networks to match needs.
+    \item Swap inner two layers (done at order).
+\end{itemize}
+
 \chapter{Design considerations}
 The board has been designed as a 4-layer PCB with the following topology:
 \begin{center}
