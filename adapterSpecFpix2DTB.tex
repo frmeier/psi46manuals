@@ -33,12 +33,15 @@ This document is not a full documentation of the whole chain. Please refer to th
     \midrule
     0.0 & 1.1 \\
     1.0 & 2.0 \\
+    \bottomrule
 \end{tabular}
+
+\bigskip
 
 Changes to version 2.0 of module:
 \begin{itemize}
     \item Removed signal networks for \texttt{RClk\_Out} and \texttt{160MHz\_Out}. The latter is no longer present in TBM chips after version 7, the return clock is not needed.
-    \item Signals reshuffled on cable between module and adapter (consequence of previous change). This renders v2.0 of board \textbf{incompatible} to old versions of the HDI.
+    \item Signals reshuffled on cable between module and adapter (consequence of previous change). This renders v2.0 of board \textbf{incompatible} to old versions of the HDI. In fact, operating an old HDI using a new adapter or vice versa shorts \texttt{VA} and \texttt{VD} shorted to \texttt{GND} and should be avoided.
     \item The impedance matching for the two signals from the module (\texttt{OutA} and \texttt{RDa}) has been adjusted to reduce the attenuation. Downside: impedance matching no longer symmetric but reflections are ok.
     \item Added an LED to display power status (otherwise only visible on back of DTB). For operation in a dark environment, this can be turned off removing a jumper.
     \item Adjusted impedance matching networks to match needs.
@@ -96,11 +99,11 @@ The impedance matching is done following a proposal by Beat Meier of PSI and is 
 \begin{center}
 \begin{tabular}{lcc}
     \toprule %-------------------------------------------------------------------------------------------------
-    Resistor & \multicolumn{2}{c}{value} \\
+    Resistor & \multicolumn{2}{c}{--- value ---} \\
     Case & bidirectional & module to adapter \\
     \midrule %-------------------------------------------------------------------------------------------------
     $R_1$ & 39\,$\Omega$ & 0\,$\Omega$ \\
-    $R_2$ & 91\,$\Omega$ & 120,$\Omega$ \\
+    $R_2$ & 91\,$\Omega$ & 120\,$\Omega$ \\
     \bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 \end{center}
@@ -192,7 +195,7 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
 	Can be covered with Kapton as well
 	\item Four pins on the SMK connector.
     
-	These pins are hard to touch if the connector is closed (which is assumes to be the standard situation when HV is on). No special protection needed.
+	These pins are hard to touch if the connector is closed (which is assumes to be the standard situation when HV is on). No special protection needed. The neighbouring pins have no solder pin on the board to reduce the risk of shorts.
     \end{enumerate}
 \end{itemize}
 
@@ -213,7 +216,7 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
 	\begin{center}
 	\includegraphics[width=1.0\textwidth]{img/FPix2DTBadapterDrawing.png}
 	\end{center}
-	\caption{Draft of a layout including some dimensions. Red traces: top layer. Light blue traces and areas: power layer. Green traces: back layer. GND plane not shown for clarity. Holes have I.D. of 2.2\,mm, good for M2 and No.\,2 screws. Mounting on a cold box is done using the four holes at the edges. The two other holes besides the SMK connector are foreseen to mount a cable guide. Spy pads are available near the impedance matching networks and labelled for usability. Same is true for the other spy pads.}
+	\caption{Draft of a layout including some dimensions. Red traces: top layer. Light blue traces and areas: power layer. Green traces: back layer. GND plane not shown for clarity. Holes have I.D. of 2.2\,mm, good for M2 and No.\,2 screws. Mounting on a cold box is done using the four holes at the edges. Spy pads are available near the impedance matching networks and labelled for usability. Same is true for the other spy pads.}
 	\label{fig:FPix2DTBadapterDrawing}
 \end{figure}
 
@@ -230,21 +233,24 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
 {\footnotesize
 \begin{tabular}{cp{2.2cm}lclll}
 	\toprule %-------------------------------------------------------------------------------------------------
-Id & Designator & Package & Quantity & Designation & Supplier & Ref \\ 
+Id & Designator                 & Package  & Quantity & Designation & Supplier & Ref \\ 
 	\midrule %-------------------------------------------------------------------------------------------------
-1 & C1, C3, C4 & SM0603 & 3 & 100n & Digi-key & 1276-1011-1-ND \\ 
-2 & C2         & SM0603 & 1 & 1u & Digi-key & 587-1248-1-ND \\ 
-3 & J1         & SCSI68up & 1 & CONN-SCSI68 & Digi-key & A31826-ND \\ 
-4 & J2         & SMK20hv & 1 & CONN-SMK20 & SMK & Fermilab, Sergey Los \\ 
-5 & JP1        & jumper & 1 & JUMPER & Digi-key & 952-1872-ND \\ 
-6 & R9, R12, R13, R16, R17, R20 & SM0402 & 6 & 39 & Digi-key & P39JCT-ND \\ 
-7 & R11, R15, R19 & SM0402 & 3 & 91 & Digi-key & P91JCT-ND \\ 
-8 & R3, R7 & SM0402 & 2 & 120 & Digi-key & P120JCT-ND \\ 
-9 & R1, R4, R5, R8 & SM0402 & 4 & 0 & Digi-key & P0.0JCT-ND \\ 
-10 & R22, R25, R26 & SM0603 & 3 & 10k 0.1\% & Digi-key & P10KDBCT-ND \\ 
-11 & R23, R24   & SM0603 & 2 & 10k 5\% & Digi-key & P10KGCT-ND \\ 
-12 & U1        & SO8N & 1 & 24C02 & Digi-key & AT24C02C-SSHM-T SL901CT-ND \\ 
-13 & F1        & SM0603 & 1 & 500\,mA & Digi-key & SF-0603S050-2TR-ND \\ 
+1 & C1, C3, C4                  & SM0603   &        3 &        100n & Digi-key & 1276-1011-1-ND \\ 
+2 & C2                          & SM0603   &        1 &          1u & Digi-key & 587-1248-1-ND \\ 
+3 & J1                          & SCSI68up &        1 & CONN-SCSI68 & Digi-key & A31826-ND \\ 
+4 & J2                          & SMK20hv  &        1 &  CONN-SMK20 & SMK      & Fermilab, Sergey Los \\ 
+5 & JP1                         & jumper   &        1 &      JUMPER & Digi-key & 952-1872-ND \\ 
+6 & R9, R12, R13, R16, R17, R20 & SM0402   &        6 &          39 & Digi-key & P39JCT-ND \\ 
+7 & R11, R15, R19               & SM0402   &        3 &          91 & Digi-key & P91JCT-ND \\ 
+8 & R3, R7                      & SM0402   &        2 &         120 & Digi-key & P120JCT-ND \\ 
+9 & R1, R4, R5, R8              & SM0402   &        4 &           0 & Digi-key & P0.0JCT-ND \\ 
+10 & R22, R25, R26              & SM0603   &        3 &   10k 0.1\% & Digi-key & P10KDBCT-ND \\ 
+11 & R23, R24                   & SM0603   &        2 &     10k 5\% & Digi-key & P10KGCT-ND \\ 
+12 & R21                        & SM0603   &        1 &          56 & Digi-key & P56GCT-ND \\ 
+13 & U1                         & SO8N     &        1 &       24C02 & Digi-key & AT24C02C-SSHM-T SL901CT-ND \\ 
+14 & F1                         & SM0603   &        1 &     500\,mA & Digi-key & SF-0603S050-2TR-ND \\ 
+15 & JP2                        & jumper   &        1 &      JUMPER & & \\ 
+16 & D1                         & SM0603   &        1 &             & Digi-key & LTST-C191KRKT \\ 
 	\bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 }
@@ -256,6 +262,8 @@ Notes:
     \item Do not put any resistor R2, R6, R10, R14 and R18. Leave them empty. Their space may be needed in case a cable with a higher impedance than the SCSI cable is used.
     \item The pads neighbouring the HV pads (2 on each side) are not available on the PCB. When mounting the connector make sure there is no solder under these unused pads that may create a short.
     \item Dimension of fuse F1 needs to be determined, other values are available.
+    \item LED D1 can be exchanged by any other suitable type but should be of red color to match the same signal LED on the DTB.
+    \item Jumper JP2 is a standard 1/10\,in jumper. Either put 2 pin plus jumper there or connect with a wire. Shipping state should be with jumper shorted, i.e. LED turned on.
 \end{itemize}
 
 
