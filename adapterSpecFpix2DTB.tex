@@ -7,6 +7,7 @@ This board allows to connect FPix modules (Phase-I upgrade) using a flex cable t
     \item Provide a resistor bridge for measuring the temperature of the HDI using its RTD and two ADC channels in the DTB.
     \item Has an 2\,kbit EEPROM to identify the type of adapter, connected to the DTB via its \isqc{} bus.
     \item Can be mounted on a PSI cold box in a configuration of four boards.
+    \item Displays the power on state on the board using an LED, selectable by a jumper
 \end{itemize}
 
 The following conventions are used throughout this document:
@@ -38,9 +39,11 @@ Changes to version 2.0 of module:
 \begin{itemize}
     \item Removed signal networks for \texttt{RClk\_Out} and \texttt{160MHz\_Out}. The latter is no longer present in TBM chips after version 7, the return clock is not needed.
     \item Signals reshuffled on cable between module and adapter (consequence of previous change). This renders v2.0 of board \textbf{incompatible} to old versions of the HDI.
-    \item Added an LED to display power status (otherwise only visible on back of DTB).
+    \item The impedance matching for the two signals from the module (\texttt{OutA} and \texttt{RDa}) has been adjusted to reduce the attenuation. Downside: impedance matching no longer symmetric but reflections are ok.
+    \item Added an LED to display power status (otherwise only visible on back of DTB). For operation in a dark environment, this can be turned off removing a jumper.
     \item Adjusted impedance matching networks to match needs.
     \item Swap inner two layers (done at order).
+    \item The 3.3\,V net is now fused on the board to prevent overcurrent in case of a short downstream the SCSI connector.
 \end{itemize}
 
 \chapter{Design considerations}
@@ -71,12 +74,9 @@ The signal connections between the TBM and the DTB are as follows:
     \texttt{SD\_In}      & $\leftarrow$  & \texttt{SDA}    & \\
     \texttt{Trig\_In}    & $\leftarrow$  & \texttt{CTR}    & \\
     \texttt{Clk\_In}     & $\leftarrow$  & \texttt{CLK}    & \\
-    \texttt{RClk\_Out}   & $\rightarrow$ & \texttt{SDATA3} & Not for regular use. Some TBM versions may not provide it. \\
-    \texttt{160MHz\_Out} & $\rightarrow$ & \texttt{SDATA4} & Not for regular use. Some TBM versions may not provide it. \\
     \bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 \end{center}
-The two signals \texttt{RClk\_Out} and \texttt{160MHz\_Out} are for testing purposes in some versions of the TBM. Connecting them to \texttt{SDATA3} or \texttt{SDATA4} allows to study the clock behaviour using the 400\,MHz deserializer, which internally uses 8-times oversampling.
 
 \section{Impedance matching of TBM signals}
 
@@ -94,15 +94,18 @@ The impedances of the two outer connections are not the same:
 
 The impedance matching is done following a proposal by Beat Meier of PSI and is sketched out in Fig.~\ref{fig:mpedmatch}. The values calculated are:
 \begin{center}
-\begin{tabular}{lc}
+\begin{tabular}{lcc}
     \toprule %-------------------------------------------------------------------------------------------------
-    Resistor & value \\
+    Resistor & \multicolumn{2}{c}{value} \\
+    Case & bidirectional & module to adapter \\
     \midrule %-------------------------------------------------------------------------------------------------
-    $R_1$ & 39\,$\Omega$ \\
-    $R_2$ & 91\,$\Omega$ \\
+    $R_1$ & 39\,$\Omega$ & 0\,$\Omega$ \\
+    $R_2$ & 91\,$\Omega$ & 120,$\Omega$ \\
     \bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 \end{center}
+The \emph{bidirectional} case matches the impedances in both directions, suppressing reflections in any case. The second case, \emph{module to adapter}, does it in one direction only, i.e.~any reflections are suppressed only in the direction from the module to the DTB. This has the advantage of reduced attenuation of the signal, which was a problem with the previous version of the board. As the signal direction will not change, this is not an issue. The bidirectional approach is kind of a luxury but nice.
+
 This choice of resistors are available in the E24 series and lead to the following differential impedances:
 \begin{equation}
 Z_1 = 2R_1 + \frac{1}{1/R_2 + 1/Z_2} = 115\,\Omega
@@ -165,14 +168,14 @@ The size of the board are driven by the following requirements:
 \begin{itemize}
     \item The PSI coldbox takes up to four modules, spaced by 60\,mm. The flex cables will therefore come out of the cold volume in the same spacing (center to center).
     \item The SCSI connectors come in a width of 64\,mm. This is wider than the spacing just mentioned. This requires to turn them by 90$^\circ$ and direct the SCSI cable perpendicular to the flex cables.
-    \item The SMK connector needs to be close enough to the flex cable end, which sticks out of the cold volume by just 40\,mm.
+    \item The SMK connector needs to be close enough to the flex cable end, which sticks out of the cold volume by about 80\,mm.\footnote{Compared to the previous version, this is much more relaxed. This was made possible due to a reshaping of the cold plate of the box for other reasons. With this occasion, the location of the module was shifted towards the center.}
     \item The height level of the SMK connector should match the height of the insulation lid of the cold volume.
 \end{itemize}
 All this lead to the following specifications:
 \begin{itemize}
-    \item Dimension of 40 $\times$ 140\,mm$^2$
+    \item Dimension of 40 $\times$ 100\,mm$^2$
     \item No parts on the bottom side of the board
-    \item SMK connector within less than 20\,mm of the edge towards the cold volume
+    \item SMK connector within less than 30\,mm of the edge towards the cold volume
 \end{itemize}
 
 \section{HV protection}
@@ -198,7 +201,6 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
     \item All differential signals should be accessible as spy pads, preferrably on the chip side for debugging. For a later version of the board, this requirements may be dropped in favour of less parasitic capacitance.
     \item In the same spirit, the power voltages and the RTD signals should be available as well.
     \item Mounting holes should be placed at appropriate locations.
-    \item Two holes in the vicinity of the SMK connector should be placed to mount an optional cable guide and/or strain relief.
     \item If tracing of TBM signals cannot be made without using vias, less important signals like the return clocks should be taken for this. In any case, vias in differential signals will be applied in pairs.
 \end{itemize}
 
@@ -231,17 +233,29 @@ High voltage is supplied via the DTB\footnote{The DTB has a relay to control HV 
 Id & Designator & Package & Quantity & Designation & Supplier & Ref \\ 
 	\midrule %-------------------------------------------------------------------------------------------------
 1 & C1, C3, C4 & SM0603 & 3 & 100n & Digi-key & 1276-1011-1-ND \\ 
-2 & C2 & SM0603 & 1 & 1u & Digi-key & 587-1248-1-ND \\ 
-3 & J1 & SCSI68up & 1 & CONN-SCSI68 & Digi-key & A31826-ND \\ 
-4 & J2 & SMK20 & 1 & CONN-SMK20 & SMK & Fermilab, Sergey Los \\ 
-5 & JP1 & jumper & 1 & JUMPER &  & piece of wire \\ 
-6 & R16, R18, R21, R19, R15, R13, R12, R10, R9, R7, R6, R4, R3, R1 & SM0402 & 14 & 39 & Digi-key & P39JCT-ND \\ 
-7 & R2, R5, R8, R11, R14, R20, R17 & SM0402 & 7 & 91 & Digi-key & P91JCT-ND \\ 
-8 & R22, R25, R26 & SM0603 & 3 & 10k 0.1\% & Digi-key & P10KDBCT-ND \\ 
-9 & R23, R24 & SM0603 & 2 & 10k 5\% & Digi-key & P10KGCT-ND \\ 
-10 & U1 & SO8N & 1 & 24C02 & Digi-key & AT24C02C-SSHM-T SL901CT-ND \\ 
+2 & C2         & SM0603 & 1 & 1u & Digi-key & 587-1248-1-ND \\ 
+3 & J1         & SCSI68up & 1 & CONN-SCSI68 & Digi-key & A31826-ND \\ 
+4 & J2         & SMK20hv & 1 & CONN-SMK20 & SMK & Fermilab, Sergey Los \\ 
+5 & JP1        & jumper & 1 & JUMPER & Digi-key & 952-1872-ND \\ 
+6 & R9, R12, R13, R16, R17, R20 & SM0402 & 6 & 39 & Digi-key & P39JCT-ND \\ 
+7 & R11, R15, R19 & SM0402 & 3 & 91 & Digi-key & P91JCT-ND \\ 
+8 & R3, R7 & SM0402 & 2 & 120 & Digi-key & P120JCT-ND \\ 
+9 & R1, R4, R5, R8 & SM0402 & 4 & 0 & Digi-key & P0.0JCT-ND \\ 
+10 & R22, R25, R26 & SM0603 & 3 & 10k 0.1\% & Digi-key & P10KDBCT-ND \\ 
+11 & R23, R24   & SM0603 & 2 & 10k 5\% & Digi-key & P10KGCT-ND \\ 
+12 & U1        & SO8N & 1 & 24C02 & Digi-key & AT24C02C-SSHM-T SL901CT-ND \\ 
+13 & F1        & SM0603 & 1 & 500\,mA & Digi-key & SF-0603S050-2TR-ND \\ 
 	\bottomrule %-------------------------------------------------------------------------------------------------
 \end{tabular}
 }
+
+\bigskip
+
+Notes:
+\begin{itemize}
+    \item Do not put any resistor R2, R6, R10, R14 and R18. Leave them empty. Their space may be needed in case a cable with a higher impedance than the SCSI cable is used.
+    \item The pads neighbouring the HV pads (2 on each side) are not available on the PCB. When mounting the connector make sure there is no solder under these unused pads that may create a short.
+    \item Dimension of fuse F1 needs to be determined, other values are available.
+\end{itemize}
 
 
