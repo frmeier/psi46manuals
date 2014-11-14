@@ -21,3 +21,5 @@
 *.xdy
 *.glg
 *.bcf
+material
+.DS_Store
